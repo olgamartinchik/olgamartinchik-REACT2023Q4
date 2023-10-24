@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint --fix",
     "preview": "vite preview",
-    "format:fix": "prettier --write",
+    "format:fix": "prettier --write prettier --write --config ./.prettierrc",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "npm lint:fix",
