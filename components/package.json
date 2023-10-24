@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint --fix",
     "preview": "vite preview",
-    "format": "prettier --write --config ./.prettierrc",
+    "format:fix": "prettier --write --config ./.prettierrc",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "npm lint:fix",
@@ -20,8 +20,13 @@
     "src/**/*.{js,jsx,ts,tsx,json}": [
       "npm run lint",
       "npm run lint:fix",
-      "npm run format"
+      "npm run format:fix"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "dependencies": {
     "react": "^18.2.0",
