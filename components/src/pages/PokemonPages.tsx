@@ -54,41 +54,33 @@ class PokemonPage extends React.Component {
       if (res.status !== 200) {
         throw new Error('Network response was not ok');
       }
-
       const data: PokemonData = await res.json();
-
       return data;
     } catch (error) {
-      console.error(error);
+      this.handleError(error as Error);
     }
   }
 
-  async handleData(data: PokemonData | Pokemon) {
-    console.log('data', data);
-    if (data && (data as PokemonData).results) {
+  async handleData(
+    data: PokemonData | Pokemon,
+    value: string
+  ): Promise<Pokemon[] | undefined> {
+    if (!data) {
+      throw new Error(
+        `Pokemon ${value.toUpperCase()} was not found! Please, reload page.`
+      );
+    }
+    if ((data as PokemonData).results) {
       const results = (data as PokemonData).results;
 
-      const pokemon = await Promise.all(
+      return Promise.all(
         results.map(async (result: { url: string }) => {
           const res = await fetch(result.url);
           return res.json();
         })
       );
-
-      this.setState({
-        pokemon,
-        loading: false,
-        error: null,
-      });
-    } else if (data && (data as Pokemon).name) {
-      console.log('data.name', (data as Pokemon).name);
-      this.setState({
-        pokemon: [data],
-        loading: false,
-        error: null,
-      });
-    } else {
-      this.handleError(new Error(`Pokemon was not founded!`));
+    } else if ((data as Pokemon).name) {
+      return [data as Pokemon];
     }
   }
 
@@ -103,7 +95,18 @@ class PokemonPage extends React.Component {
   async getPokemon(value: string) {
     try {
       const data = (await this.fetchData(value)) as PokemonData | Pokemon;
-      this.handleData(data);
+
+      const pokemon = await this.handleData(data, value);
+      this.setState({
+        pokemon,
+        loading: false,
+        error: null,
+      });
+      if (pokemon && pokemon?.length !== 0) {
+        localStorage.setItem('searchValue', value);
+      } else {
+        localStorage.removeItem('searchValue');
+      }
     } catch (error) {
       this.handleError(error as Error);
     }
@@ -112,7 +115,6 @@ class PokemonPage extends React.Component {
   componentDidMount() {
     const localSearchQuery = localStorage.getItem('searchValue') as string;
     const searchQuery = localSearchQuery ? localSearchQuery : '';
-
     this.getPokemon(searchQuery);
   }
 
@@ -121,10 +123,14 @@ class PokemonPage extends React.Component {
   };
 
   render() {
+    if (this.state.error) {
+      throw new Error(this.state.error);
+    }
+
     return (
       <>
         <Header updatePokemon={this.updatePokemon} />
-        {/* {this.state.error} */}
+
         <ErrorBoundary>
           <CardContainer {...this.state} />
         </ErrorBoundary>

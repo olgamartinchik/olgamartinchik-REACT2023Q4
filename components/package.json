@@ -7,9 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint --fix",
+    "lint:fix": "eslint ./src --fix",
     "preview": "vite preview",
-    "format:fix": "prettier --write --config ./.prettierrc",
+    "format:fix": "prettier ./src  --write --config ./.prettierrc",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "npm lint:fix",
@@ -17,7 +17,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/*.{js,jsx,ts,tsx,json}": [
+    "src/**/*.{js,jsx,ts,tsx,json}": [
       "npm run lint",
       "npm run lint:fix",
       "npm run format:fix"

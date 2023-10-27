@@ -22,11 +22,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
   render() {
     const { error } = this.state;
+
     if (error) {
       return (
         <div>
-          <p>Seems like an error occured!</p>
-          <p>{error.message}</p>
+          <h3>Seems like an error occurred!</h3>
+          <h4>{error.message}</h4>
         </div>
       );
     }

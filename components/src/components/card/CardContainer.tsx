@@ -11,25 +11,26 @@ interface CardContainerProps {
 }
 interface CardContainerState {
   hasError: boolean;
+  handleError: null | string;
 }
 class CardContainer extends React.Component<CardContainerProps> {
   state: CardContainerState = {
     hasError: false,
+    handleError: null,
   };
   throwError = () => {
     try {
       throw new Error('Custom error message');
     } catch (error) {
       console.error('Error caught:', error);
-      this.setState({ hasError: true });
+      this.setState({ hasError: true, handleError: (error as Error).message });
     }
   };
   render() {
-    if (this.props.error) {
-      throw new Error(this.props.error);
-    } else if (this.state.hasError) {
-      //   return <div>Error: An error occurred.</div>;
-      throw new Error('Handle error message');
+    if (this.state.hasError) {
+      throw new Error(
+        `Handle error message. ${this.state.handleError}. Please, reload page.`
+      );
     }
     return (
       <>
@@ -40,8 +41,6 @@ class CardContainer extends React.Component<CardContainerProps> {
         <section className="container">
           {this.props.loading ? (
             <p>Loading...</p>
-          ) : !this.props.pokemon || !this.props.pokemon.length ? (
-            <p>Such a Pokemon was not found!</p>
           ) : (
             this.props.pokemon.map((item, ind) => (
               <Card
