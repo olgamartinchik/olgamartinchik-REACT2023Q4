@@ -69,7 +69,7 @@ class PokemonPage extends React.Component {
       const results = (data as PokemonData).results;
 
       const pokemon = await Promise.all(
-        results.map(async (result: { url: RequestInfo | URL }) => {
+        results.map(async (result: { url: string }) => {
           const res = await fetch(result.url);
           return res.json();
         })
