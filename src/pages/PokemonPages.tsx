@@ -1,13 +1,8 @@
-import React, { Key } from 'react';
+import React, { Key, useEffect, useState } from 'react';
 import Header from '../components/header/Header';
-import CardContainer from '../components/card/CardContainer';
+import { CardContainer } from '../components/card/CardContainer';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
-interface CardContainerState {
-  pokemon: Pokemon[];
-  loading: boolean;
-  error: null | string;
-}
 export interface PokemonAbility {
   ability: { name: string; url: string };
 }
@@ -31,18 +26,29 @@ interface PokemonData {
   previous: string;
   results: PokemonResultData[];
 }
+
 interface PokemonResultData {
   name: string;
   url: string;
 }
+export const PokemonPage = () => {
+  const [pokemon, setPokemon] = useState<Pokemon[] | []>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<null | string>(null);
 
-class PokemonPage extends React.Component {
-  state: CardContainerState = {
-    pokemon: [],
-    loading: true,
-    error: null,
-  };
-  async fetchData(searchQuery: string): Promise<PokemonData | Pokemon | void> {
+  useEffect(() => {
+    const localSearchQuery = localStorage.getItem('searchValue') as string;
+    const searchQuery = localSearchQuery ? localSearchQuery : '';
+    getPokemon(searchQuery);
+  }, []);
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  const fetchData = async (
+    searchQuery: string
+  ): Promise<PokemonData | Pokemon | void> => {
     const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
     const URL = searchQuery
       ? `${baseUrl}${searchQuery}`
@@ -57,14 +63,14 @@ class PokemonPage extends React.Component {
       const data: PokemonData = await res.json();
       return data;
     } catch (error) {
-      this.handleError(error as Error);
+      handleError(error as Error);
     }
-  }
+  };
 
-  async handleData(
+  const handleData = async (
     data: PokemonData | Pokemon,
     value: string
-  ): Promise<Pokemon[] | undefined> {
+  ): Promise<Pokemon[] | undefined> => {
     if (!data) {
       throw new Error(
         `Pokemon ${value.toUpperCase()} was not found! Please, reload page.`
@@ -82,60 +88,43 @@ class PokemonPage extends React.Component {
     } else if ((data as Pokemon).name) {
       return [data as Pokemon];
     }
-  }
+  };
 
-  handleError(error: Error) {
+  const handleError = (error: Error) => {
     console.error('Error on PokemonPage:', error);
-    this.setState({
-      loading: false,
-      error: error.message,
-    });
-  }
+    setLoading(false);
+    setError(error.message);
+  };
 
-  async getPokemon(value: string) {
+  const getPokemon = async (value: string) => {
     try {
-      const data = (await this.fetchData(value)) as PokemonData | Pokemon;
+      const data = (await fetchData(value)) as PokemonData | Pokemon;
 
-      const pokemon = await this.handleData(data, value);
-      this.setState({
-        pokemon,
-        loading: false,
-        error: null,
-      });
+      const pokemon = await handleData(data, value);
+      setLoading(false);
+      setError(null);
+      setPokemon(pokemon!);
+
       if (pokemon && pokemon?.length !== 0) {
         localStorage.setItem('searchValue', value);
       } else {
         localStorage.removeItem('searchValue');
       }
     } catch (error) {
-      this.handleError(error as Error);
+      handleError(error as Error);
     }
-  }
-
-  componentDidMount() {
-    const localSearchQuery = localStorage.getItem('searchValue') as string;
-    const searchQuery = localSearchQuery ? localSearchQuery : '';
-    this.getPokemon(searchQuery);
-  }
-
-  updatePokemon = (searchValue: string) => {
-    this.getPokemon(searchValue);
   };
 
-  render() {
-    if (this.state.error) {
-      throw new Error(this.state.error);
-    }
+  const updatePokemon = (searchValue: string) => {
+    getPokemon(searchValue);
+  };
+  return (
+    <>
+      <Header updatePokemon={updatePokemon} />
 
-    return (
-      <>
-        <Header updatePokemon={this.updatePokemon} />
-
-        <ErrorBoundary>
-          <CardContainer {...this.state} />
-        </ErrorBoundary>
-      </>
-    );
-  }
-}
-export default PokemonPage;
+      <ErrorBoundary>
+        <CardContainer pokemon={pokemon} loading={loading} />
+      </ErrorBoundary>
+    </>
+  );
+};

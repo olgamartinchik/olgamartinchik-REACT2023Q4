@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '../input/Input';
 import './Header.scss';
-import Button from '../button/Button';
+import { Button } from '../button/Button';
 
 interface HeaderProps {
   // value: string;
@@ -34,7 +34,7 @@ class Header extends React.Component<HeaderProps> {
     return (
       <header className="header">
         <Input value={this.state.value} onChange={this.handleChange} />
-        <Button onClick={this.handleSearch} text={'Search'} />
+        <Button handleButton={this.handleSearch} text={'Search'} />
       </header>
     );
   }

@@ -1,20 +1,15 @@
-import React from 'react';
+import { FC } from 'react';
 import './Button.scss';
 
 interface ButtonProps {
-  onClick: () => void;
+  handleButton: () => void;
   text: string;
 }
 
-class Button extends React.Component<ButtonProps> {
-  constructor(props: ButtonProps) {
-    super(props);
-  }
-  handleSearch = () => {
-    this.props.onClick();
+export const Button: FC<ButtonProps> = ({ handleButton, text }) => {
+  const handleSearch = (): void => {
+    handleButton();
   };
-  render() {
-    return <button onClick={this.handleSearch}>{this.props.text}</button>;
-  }
-}
-export default Button;
+
+  return <button onClick={handleSearch}>{text}</button>;
+};

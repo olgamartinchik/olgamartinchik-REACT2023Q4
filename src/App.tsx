@@ -1,6 +1,6 @@
 import './App.scss';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
-import PokemonPage from './pages/PokemonPages';
+import { PokemonPage } from './pages/PokemonPages';
 
 function App() {
   return (
