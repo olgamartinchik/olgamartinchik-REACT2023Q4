@@ -27,7 +27,6 @@ class Header extends React.Component<HeaderProps> {
 
   handleSearch = () => {
     this.props.updatePokemon(this.state.value);
-    // localStorage.setItem('searchValue', this.state.value);
   };
 
   render() {
