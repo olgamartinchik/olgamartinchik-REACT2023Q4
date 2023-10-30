@@ -2,6 +2,7 @@ import React, { Key, useEffect, useState } from 'react';
 import Header from '../components/header/Header';
 import { CardContainer } from '../components/card/CardContainer';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+import { PokemonContext } from '../context/PokemonContext';
 
 export interface PokemonAbility {
   ability: { name: string; url: string };
@@ -15,7 +16,7 @@ interface PokemonSprites {
   };
 }
 export interface Pokemon {
-  id: Key;
+  id: number;
   name: string;
   sprites: PokemonSprites;
   abilities: PokemonAbility[];
@@ -121,9 +122,10 @@ export const PokemonPage = () => {
   return (
     <>
       <Header updatePokemon={updatePokemon} />
-
       <ErrorBoundary>
-        <CardContainer pokemon={pokemon} loading={loading} />
+        <PokemonContext.Provider value={pokemon}>
+          <CardContainer pokemon={pokemon} loading={loading} />
+        </PokemonContext.Provider>
       </ErrorBoundary>
     </>
   );

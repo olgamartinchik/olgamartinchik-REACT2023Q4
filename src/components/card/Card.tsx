@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import './Card.scss';
 import { PokemonAbility } from '../../pages/PokemonPages';
+import { Link } from 'react-router-dom';
 
-interface CardProps {
+export interface CardProps {
   name?: string;
   img?: string;
   abilities?: PokemonAbility[];

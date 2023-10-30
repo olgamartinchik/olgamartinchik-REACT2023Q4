@@ -2,6 +2,8 @@ import { FC, useState } from 'react';
 import { Card } from './Card';
 import { Pokemon } from '../../pages/PokemonPages';
 import { Button } from '../button/Button';
+import { Details } from '../details/Details';
+import { Link } from 'react-router-dom';
 
 interface CardContainerProps {
   pokemon: Pokemon[];
@@ -35,18 +37,25 @@ export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
       <Button handleButton={throwError} text={'Throw Error'} />
 
       <section className="container">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          pokemon.map((item, ind) => (
-            <Card
-              key={ind}
-              name={item.name}
-              img={item.sprites?.other?.dream_world.front_default}
-              abilities={item.abilities}
-            />
-          ))
-        )}
+        <div className="container__cards">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            pokemon.map((item) => (
+              <Link to={`/details/${item.id}`} key={item.id}>
+                <Card
+                  name={item.name}
+                  img={item.sprites?.other?.dream_world.front_default}
+                  abilities={item.abilities}
+                />
+              </Link>
+            ))
+          )}
+        </div>
+
+        <div className="container__details">
+          <Details />
+        </div>
       </section>
     </>
   );

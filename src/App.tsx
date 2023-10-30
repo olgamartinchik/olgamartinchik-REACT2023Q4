@@ -1,12 +1,17 @@
 import './App.scss';
+import { BrowserRouter } from 'react-router-dom';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
-import { PokemonPage } from './pages/PokemonPages';
+import { RoutesApp } from './routes/RoutesApp';
 
 function App() {
   return (
-    <ErrorBoundary>
-      <PokemonPage />
-    </ErrorBoundary>
+    <>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <RoutesApp />
+        </BrowserRouter>
+      </ErrorBoundary>
+    </>
   );
 }
 
