@@ -31,7 +31,7 @@ export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
   };
 
   return (
-    <>
+    <div>
       <h1>pokemon</h1>
 
       <Button handleButton={throwError} text={'Throw Error'} />
@@ -57,6 +57,6 @@ export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
           <Details />
         </div>
       </section>
-    </>
+    </div>
   );
 };

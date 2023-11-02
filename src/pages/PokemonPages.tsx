@@ -1,4 +1,4 @@
-import React, { Key, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/header/Header';
 import { CardContainer } from '../components/card/CardContainer';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';

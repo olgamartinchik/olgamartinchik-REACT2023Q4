@@ -1,6 +1,6 @@
 .container {
   display: flex;
-  gap: 15px;
+  gap: 35px;
   justify-content: space-around;
 }
 .container__cards {
@@ -8,9 +8,11 @@
   flex-wrap: wrap;
   gap: 15px;
   justify-content: space-around;
+  flex: 3;
   width: 100%;
 }
 .container__details {
+  position: relative;
 }
 
 .card {

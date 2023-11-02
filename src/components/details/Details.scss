@@ -1,0 +1,17 @@
+.details {
+  width: 260px;
+  position: sticky;
+  top: 130px;
+  height: 600px;
+}
+
+.details__title {
+  font-size: 36px;
+  text-transform: uppercase;
+}
+.details__list {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
