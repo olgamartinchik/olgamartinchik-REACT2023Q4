@@ -2,17 +2,21 @@ import { FC, useState } from 'react';
 import { Card } from './Card';
 import { Pokemon } from '../../pages/PokemonPages';
 import { Button } from '../button/Button';
-import { Details } from '../details/Details';
-import { Link } from 'react-router-dom';
+
+import { Link, Outlet, useSearchParams } from 'react-router-dom';
 
 interface CardContainerProps {
   pokemon: Pokemon[];
   loading: boolean;
+  updatePokemon: (searchValue: string, page: string, limit: string) => void;
 }
 
 export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
   const [isHasError, setIsHasError] = useState<boolean>(false);
   const [handleError, setHandleError] = useState<null | string>(null);
+  const [searchParams] = useSearchParams();
+
+  const postQuery = searchParams.get('offset');
 
   if (isHasError) {
     throw new Error(
@@ -29,7 +33,8 @@ export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
       setHandleError((error as Error).message);
     }
   };
-
+  {
+  }
   return (
     <div>
       <h1>pokemon</h1>
@@ -39,10 +44,13 @@ export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
       <section className="container">
         <div className="container__cards">
           {loading ? (
-            <p>Loading...</p>
+            <h3>Loading...</h3>
           ) : (
             pokemon.map((item) => (
-              <Link to={`/details/${item.id}`} key={item.id}>
+              <Link
+                to={`/details/${item.id}?frontpage=${postQuery}&detail=${item.name}`}
+                key={item.id}
+              >
                 <Card
                   name={item.name}
                   img={item.sprites?.other?.dream_world.front_default}
@@ -54,7 +62,7 @@ export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
         </div>
 
         <div className="container__details">
-          <Details />
+          <Outlet />
         </div>
       </section>
     </div>

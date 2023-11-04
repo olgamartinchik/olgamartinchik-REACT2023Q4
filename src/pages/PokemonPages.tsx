@@ -3,6 +3,7 @@ import Header from '../components/header/Header';
 import { CardContainer } from '../components/card/CardContainer';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import { PokemonContext } from '../context/PokemonContext';
+import { Pagination } from '../components/Pagination/Pagination';
 
 export interface PokemonAbility {
   ability: { name: string; url: string };
@@ -21,7 +22,7 @@ export interface Pokemon {
   sprites: PokemonSprites;
   abilities: PokemonAbility[];
 }
-interface PokemonData {
+export interface PokemonData {
   count: number;
   next: string;
   previous: string;
@@ -36,6 +37,7 @@ export const PokemonPage = () => {
   const [pokemon, setPokemon] = useState<Pokemon[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
+  const [countPages, setCountPages] = useState<number | null>(null);
 
   useEffect(() => {
     const localSearchQuery = localStorage.getItem('searchValue') as string;
@@ -48,12 +50,14 @@ export const PokemonPage = () => {
   }
 
   const fetchData = async (
-    searchQuery: string
+    searchQuery = '',
+    page = '2',
+    limit = '20'
   ): Promise<PokemonData | Pokemon | void> => {
     const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
     const URL = searchQuery
       ? `${baseUrl}${searchQuery}`
-      : `${baseUrl}?offset=20&limit=20`;
+      : `${baseUrl}?offset=${page}0&limit=${limit}`;
 
     try {
       const res = await fetch(URL);
@@ -79,7 +83,7 @@ export const PokemonPage = () => {
     }
     if ((data as PokemonData).results) {
       const results = (data as PokemonData).results;
-
+      setCountPages((data as PokemonData).count);
       return Promise.all(
         results.map(async (result: { url: string }) => {
           const res = await fetch(result.url);
@@ -97,9 +101,11 @@ export const PokemonPage = () => {
     setError(error.message);
   };
 
-  const getPokemon = async (value: string) => {
+  const getPokemon = async (value: string, page = '2', limit = '20') => {
     try {
-      const data = (await fetchData(value)) as PokemonData | Pokemon;
+      const data = (await fetchData(value, page, limit)) as
+        | PokemonData
+        | Pokemon;
 
       const pokemon = await handleData(data, value);
       setLoading(false);
@@ -116,16 +122,23 @@ export const PokemonPage = () => {
     }
   };
 
-  const updatePokemon = (searchValue: string) => {
-    getPokemon(searchValue);
+  const updatePokemon = (searchValue: string, page = '2', limit = '20') => {
+    getPokemon(searchValue, page, limit);
   };
   return (
     <>
       <Header updatePokemon={updatePokemon} />
       <ErrorBoundary>
-        <PokemonContext.Provider value={pokemon}>
-          <CardContainer pokemon={pokemon} loading={loading} />
-        </PokemonContext.Provider>
+        <CardContainer
+          pokemon={pokemon}
+          loading={loading}
+          updatePokemon={updatePokemon}
+        />
+        <Pagination
+          countPages={countPages}
+          loading={loading}
+          updatePokemon={updatePokemon}
+        />
       </ErrorBoundary>
     </>
   );
