@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useLayoutEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './Pagination.scss';
 
@@ -15,15 +15,26 @@ export const Pagination: FC<PaginationProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limitPage, setLimitPage] = useState(20);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [, setSearchParams] = useSearchParams();
+  const offsetQuery = searchParams.get('offset');
+  const limitQuery = searchParams.get('limit');
+  useLayoutEffect(() => {
+    if (offsetQuery && +offsetQuery !== currentPage) {
+      setCurrentPage(() => +offsetQuery);
+    }
+
+    if (limitQuery && +limitQuery !== limitPage) {
+      setLimitPage(() => +limitQuery);
+    }
+  }, [offsetQuery, limitQuery]);
 
   useEffect(() => {
-    console.log('currentPage', currentPage, limitPage);
     setSearchParams({
       offset: currentPage.toString(),
       limit: limitPage.toString(),
     });
+
     updatePokemon('', (currentPage * 2).toString(), limitPage.toString());
   }, [currentPage, limitPage]);
 
@@ -43,7 +54,7 @@ export const Pagination: FC<PaginationProps> = ({
   const endPage = Math.min(totalPages, startPage + visiblePageRange - 1);
 
   const handleSetCurrentPage = (newPage: number) => {
-    setCurrentPage(() => newPage);
+    setCurrentPage(newPage);
   };
 
   const handleSetLimitPage = (e: ChangeEvent<HTMLSelectElement>) => {

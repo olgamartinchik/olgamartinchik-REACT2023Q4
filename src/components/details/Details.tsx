@@ -38,7 +38,6 @@ export const Details = () => {
   useEffect(() => {
     let timerId: number;
     if (detailQuery) {
-      console.log('detailQuery', detailQuery);
       setLoading(true);
       timerId = setTimeout(async () => {
         try {
