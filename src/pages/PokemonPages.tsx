@@ -33,26 +33,24 @@ interface PokemonResultData {
   name: string;
   url: string;
 }
+function isPokemonData(param: PokemonData | Pokemon): param is PokemonData {
+  return (param as PokemonData).results !== undefined;
+}
+
 export const PokemonPage = () => {
   const [pokemon, setPokemon] = useState<Pokemon[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
   const [countPages, setCountPages] = useState<number | null>(null);
 
-  useEffect(() => {
-    const localSearchQuery = localStorage.getItem('searchValue') as string;
-    const searchQuery = localSearchQuery ? localSearchQuery : '';
-    getPokemon(searchQuery);
-  }, []);
-
   if (error) {
     throw new Error(error);
   }
 
   const fetchData = async (
-    searchQuery = '',
-    page = '2',
-    limit = '20'
+    searchQuery: string,
+    page: string,
+    limit: string
   ): Promise<PokemonData | Pokemon | void> => {
     const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
     const URL = searchQuery
@@ -65,7 +63,7 @@ export const PokemonPage = () => {
       if (res.status !== 200) {
         throw new Error('Network response was not ok');
       }
-      const data: PokemonData = await res.json();
+      const data = await res.json();
       return data;
     } catch (error) {
       handleError(error as Error);
@@ -81,17 +79,18 @@ export const PokemonPage = () => {
         `Pokemon ${value.toUpperCase()} was not found! Please, reload page.`
       );
     }
-    if ((data as PokemonData).results) {
-      const results = (data as PokemonData).results;
-      setCountPages((data as PokemonData).count);
+    if (isPokemonData(data)) {
+      const results = data.results;
+      setCountPages(data.count);
       return Promise.all(
         results.map(async (result: { url: string }) => {
           const res = await fetch(result.url);
           return res.json();
         })
       );
-    } else if ((data as Pokemon).name) {
-      return [data as Pokemon];
+    } else {
+      setCountPages(1);
+      return [data];
     }
   };
 
@@ -101,7 +100,7 @@ export const PokemonPage = () => {
     setError(error.message);
   };
 
-  const getPokemon = async (value: string, page = '2', limit = '20') => {
+  const getPokemon = async (value: string, page: string, limit: string) => {
     try {
       const data = (await fetchData(value, page, limit)) as
         | PokemonData
@@ -111,35 +110,29 @@ export const PokemonPage = () => {
       setLoading(false);
       setError(null);
       setPokemon(pokemon!);
-
+      console.log('pokemon', pokemon);
       if (pokemon && pokemon?.length !== 0) {
         localStorage.setItem('searchValue', value);
-      } else {
-        localStorage.removeItem('searchValue');
       }
     } catch (error) {
       handleError(error as Error);
     }
   };
 
-  const updatePokemon = (searchValue: string, page = '2', limit = '20') => {
+  const updatePokemon = (searchValue: string, page: string, limit: string) => {
     getPokemon(searchValue, page, limit);
   };
   return (
     <>
-      <Header updatePokemon={updatePokemon} />
-      <ErrorBoundary>
-        <CardContainer
-          pokemon={pokemon}
-          loading={loading}
-          updatePokemon={updatePokemon}
-        />
-        <Pagination
-          countPages={countPages}
-          loading={loading}
-          updatePokemon={updatePokemon}
-        />
-      </ErrorBoundary>
+      <PokemonContext.Provider
+        value={{ countPages, pokemon, loading, updatePokemon }}
+      >
+        <Header />
+        <ErrorBoundary>
+          <CardContainer />
+          <Pagination />
+        </ErrorBoundary>
+      </PokemonContext.Provider>
     </>
   );
 };

@@ -1,20 +1,16 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { Card } from './Card';
 import { Pokemon } from '../../pages/PokemonPages';
 import { Button } from '../button/Button';
 
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
+import { PokemonContext } from '../../context/PokemonContext';
 
-interface CardContainerProps {
-  pokemon: Pokemon[];
-  loading: boolean;
-  updatePokemon: (searchValue: string, page: string, limit: string) => void;
-}
-
-export const CardContainer: FC<CardContainerProps> = ({ pokemon, loading }) => {
+export const CardContainer = () => {
   const [isHasError, setIsHasError] = useState<boolean>(false);
   const [handleError, setHandleError] = useState<null | string>(null);
   const [searchParams] = useSearchParams();
+  const { pokemon, loading } = useContext(PokemonContext);
 
   const postQuery = searchParams.get('offset');
 

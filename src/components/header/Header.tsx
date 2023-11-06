@@ -1,42 +1,36 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Input from '../input/Input';
 import './Header.scss';
 import { Button } from '../button/Button';
+import { PokemonContext } from '../../context/PokemonContext';
+import { useSearchParams } from 'react-router-dom';
 
-interface HeaderProps {
-  // value: string;
-  updatePokemon: (searchValue: string) => void;
-}
+export const Header = () => {
+  const [searchParams] = useSearchParams();
+  const [value, setValue] = useState('');
+  const { updatePokemon } = useContext(PokemonContext);
 
-class Header extends React.Component<HeaderProps> {
-  state = {
-    value: '',
-  };
-  componentDidMount() {
-    const localSearchQuery = localStorage.getItem('searchValue') as string;
+  useEffect(() => {
+    const localSearchQuery = localStorage.getItem('searchValue');
+    setValue(localSearchQuery ? localSearchQuery : '');
+  }, []);
 
-    this.setState({
-      value: localSearchQuery ? localSearchQuery : '',
-    });
-  }
-  handleChange = (newValue: string) => {
-    this.setState({
-      value: newValue,
-    });
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
   };
 
-  handleSearch = () => {
-    this.props.updatePokemon(this.state.value);
+  const handleSearch = () => {
+    const offset = searchParams.get('offset') || '';
+    const limit = searchParams.get('limit') || '';
+    updatePokemon(value, offset, limit);
   };
 
-  render() {
-    return (
-      <header className="header">
-        <Input value={this.state.value} onChange={this.handleChange} />
-        <Button handleButton={this.handleSearch} text={'Search'} />
-      </header>
-    );
-  }
-}
+  return (
+    <header className="header">
+      <Input value={value} onChange={handleChange} />
+      <Button handleButton={handleSearch} text={'Search'} />
+    </header>
+  );
+};
 
 export default Header;

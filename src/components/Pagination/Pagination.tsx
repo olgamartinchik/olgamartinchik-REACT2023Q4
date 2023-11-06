@@ -1,33 +1,24 @@
-import { ChangeEvent, FC, useEffect, useLayoutEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './Pagination.scss';
+import { PokemonContext } from '../../context/PokemonContext';
 
-interface PaginationProps {
-  countPages: number | null;
-  loading: boolean;
-  updatePokemon: (searchValue: string, page: string, limit: string) => void;
-}
-
-export const Pagination: FC<PaginationProps> = ({
-  countPages,
-  loading,
-  updatePokemon,
-}) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [limitPage, setLimitPage] = useState(20);
+export const Pagination = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(() =>
+    Number(searchParams.get('offset') || 1)
+  );
+  const [limitPage, setLimitPage] = useState(() =>
+    Number(searchParams.get('limit') || 20)
+  );
 
-  const offsetQuery = searchParams.get('offset');
-  const limitQuery = searchParams.get('limit');
-  useLayoutEffect(() => {
-    if (offsetQuery && +offsetQuery !== currentPage) {
-      setCurrentPage(() => +offsetQuery);
-    }
+  const { countPages, loading, updatePokemon } = useContext(PokemonContext);
 
-    if (limitQuery && +limitQuery !== limitPage) {
-      setLimitPage(() => +limitQuery);
+  useEffect(() => {
+    if (countPages === 1) {
+      setCurrentPage(1);
     }
-  }, [offsetQuery, limitQuery]);
+  }, [countPages]);
 
   useEffect(() => {
     setSearchParams({
@@ -35,7 +26,9 @@ export const Pagination: FC<PaginationProps> = ({
       limit: limitPage.toString(),
     });
 
-    updatePokemon('', (currentPage * 2).toString(), limitPage.toString());
+    const value = localStorage.getItem('searchValue') || '';
+
+    updatePokemon(value, (currentPage * 2).toString(), limitPage.toString());
   }, [currentPage, limitPage]);
 
   const generatePageNumbers = (start: number, end: number) => {
