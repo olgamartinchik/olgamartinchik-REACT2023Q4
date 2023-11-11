@@ -1,8 +1,6 @@
-import { FC, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Card } from './Card';
-import { Pokemon } from '../../pages/PokemonPages';
 import { Button } from '../button/Button';
-
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
 import { PokemonContext } from '../../context/PokemonContext';
 
@@ -41,6 +39,8 @@ export const CardContainer = () => {
         <div className="container__cards">
           {loading ? (
             <h3>Loading...</h3>
+          ) : !pokemon || !pokemon.length ? (
+            <p>Pokemon were not found</p>
           ) : (
             pokemon.map((item) => (
               <Link

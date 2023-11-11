@@ -11,8 +11,7 @@ export const Header = () => {
   const { updatePokemon } = useContext(PokemonContext);
 
   useEffect(() => {
-    const localSearchQuery = localStorage.getItem('searchValue');
-    setValue(localSearchQuery ? localSearchQuery : '');
+    setValue(localStorage.getItem('searchValue') || '');
   }, []);
 
   const handleChange = (newValue: string) => {

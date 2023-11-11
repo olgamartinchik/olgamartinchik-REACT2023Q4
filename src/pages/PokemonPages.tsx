@@ -1,38 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from '../components/header/Header';
 import { CardContainer } from '../components/card/CardContainer';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import { PokemonContext } from '../context/PokemonContext';
 import { Pagination } from '../components/Pagination/Pagination';
+import { Pokemon, PokemonData } from '../types/pokemonTypes';
 
-export interface PokemonAbility {
-  ability: { name: string; url: string };
-}
-interface PokemonSprites {
-  back_default: string;
-  other: {
-    dream_world: {
-      front_default: string;
-    };
-  };
-}
-export interface Pokemon {
-  id: number;
-  name: string;
-  sprites: PokemonSprites;
-  abilities: PokemonAbility[];
-}
-export interface PokemonData {
-  count: number;
-  next: string;
-  previous: string;
-  results: PokemonResultData[];
-}
-
-interface PokemonResultData {
-  name: string;
-  url: string;
-}
 function isPokemonData(param: PokemonData | Pokemon): param is PokemonData {
   return (param as PokemonData).results !== undefined;
 }

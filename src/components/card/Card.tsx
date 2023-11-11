@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import './Card.scss';
-import { PokemonAbility } from '../../pages/PokemonPages';
+import { PokemonAbility } from '../../types/pokemonTypes';
 
 export interface CardProps {
   name?: string;
@@ -11,7 +11,7 @@ export const Card: FC<CardProps> = ({ name, img, abilities }) => {
   return (
     <div className="card">
       <div className="card-img">
-        <img src={img} />
+        <img src={img} alt={name} />
       </div>
       <div className="card-list">
         <h3 className="title">{name}</h3>

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import { Pokemon } from '../../pages/PokemonPages';
 import './Details.scss';
 import { Button } from '../button/Button';
+import { Pokemon } from '../../types/pokemonTypes';
 
 export const Details = () => {
   const [searchParams] = useSearchParams();
@@ -36,7 +35,7 @@ export const Details = () => {
   };
 
   useEffect(() => {
-    let timerId: number;
+    let timerId: NodeJS.Timeout | undefined;
     if (detailQuery) {
       setLoading(true);
       timerId = setTimeout(async () => {

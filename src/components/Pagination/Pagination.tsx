@@ -5,13 +5,12 @@ import { PokemonContext } from '../../context/PokemonContext';
 
 export const Pagination = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(() =>
-    Number(searchParams.get('offset') || 1)
+  const [currentPage, setCurrentPage] = useState(
+    () => +(searchParams.get('offset') || 1)
   );
-  const [limitPage, setLimitPage] = useState(() =>
-    Number(searchParams.get('limit') || 20)
+  const [limitPage, setLimitPage] = useState(
+    () => +(searchParams.get('limit') || 20)
   );
-
   const { countPages, loading, updatePokemon } = useContext(PokemonContext);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export const Pagination = () => {
 
     const value = localStorage.getItem('searchValue') || '';
 
-    updatePokemon(value, (currentPage * 2).toString(), limitPage.toString());
+    updatePokemon!(value, (currentPage * 2).toString(), limitPage.toString());
   }, [currentPage, limitPage]);
 
   const generatePageNumbers = (start: number, end: number) => {
