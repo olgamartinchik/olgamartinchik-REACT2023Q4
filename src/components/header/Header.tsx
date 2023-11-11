@@ -21,7 +21,7 @@ export const Header = () => {
   const handleSearch = () => {
     const offset = searchParams.get('offset') || '';
     const limit = searchParams.get('limit') || '';
-    updatePokemon(value, offset, limit);
+    updatePokemon!(value, offset, limit);
   };
 
   return (

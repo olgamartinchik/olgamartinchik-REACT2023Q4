@@ -14,9 +14,6 @@ export const Details = () => {
   const detailQuery = searchParams.get('detail');
   const navigate = useNavigate();
 
-  if (error) {
-    throw new Error(error);
-  }
   const fetchData = async (detailQuery: string): Promise<Pokemon | void> => {
     const URL = `https://pokeapi.co/api/v2/pokemon/${detailQuery}`;
 
@@ -35,25 +32,20 @@ export const Details = () => {
   };
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout | undefined;
     if (detailQuery) {
       setLoading(true);
-      timerId = setTimeout(async () => {
-        try {
-          const value = await fetchData(detailQuery);
+
+      fetchData(detailQuery)
+        .then((value) => {
           setDetails(value as Pokemon);
-        } catch (err) {
+        })
+        .catch((err) => {
           setError((err as Error).message);
-        } finally {
+        })
+        .finally(() => {
           setLoading(false);
-        }
-      }, 2000);
+        });
     }
-    return () => {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-    };
   }, [detailQuery]);
 
   if (!detailQuery) {
@@ -63,6 +55,9 @@ export const Details = () => {
   const closeDetails = () => {
     navigate(-1);
   };
+  if (error) {
+    throw new Error(error);
+  }
   return (
     <>
       <div className="details-column"></div>

@@ -22,7 +22,7 @@
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "jest", "node"]
   },
   "include": [".eslintrc.cjs", "src", "./src/test/setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -1,6 +1,7 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { PokemonPage } from '../pages/PokemonPages';
 import { Details } from '../components/details/Details';
+import NotFound from '../pages/NotFound';
 
 export const RoutesApp = () => {
   return (
@@ -8,7 +9,7 @@ export const RoutesApp = () => {
       <Route path="/" element={<PokemonPage />}>
         <Route path="/details/:itemId" element={<Details />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
