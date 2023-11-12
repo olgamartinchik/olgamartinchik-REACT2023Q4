@@ -8,10 +8,10 @@ import { useSearchParams } from 'react-router-dom';
 export const Header = () => {
   const [searchParams] = useSearchParams();
   const [value, setValue] = useState('');
-  const { updatePokemon } = useContext(PokemonContext);
+  const { updatePokemon, searchValue } = useContext(PokemonContext);
 
   useEffect(() => {
-    setValue(localStorage.getItem('searchValue') || '');
+    setValue(searchValue || localStorage.getItem('searchValue') || '');
   }, []);
 
   const handleChange = (newValue: string) => {

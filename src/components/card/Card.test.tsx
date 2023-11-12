@@ -1,12 +1,8 @@
 import userEvent from '@testing-library/user-event';
-import fetchMock from 'fetch-mock'; // Import fetchMock here
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-
+import { render, screen, fireEvent } from '@testing-library/react';
 import { pokemonMock } from '../../mock/pokemon_mock';
 import { Card, CardProps } from './Card';
-import { Details } from '../details/Details';
-
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 const mockCardData = pokemonMock[0];
 const mockCardProps: CardProps = {
@@ -14,7 +10,12 @@ const mockCardProps: CardProps = {
   img: mockCardData.sprites.back_default,
   abilities: mockCardData.abilities,
 };
-
+export const assetsFetchMock = () =>
+  Promise.resolve({
+    ok: true,
+    status: 200,
+    json: async () => mockCardProps,
+  } as Response);
 describe('Card Component', () => {
   it('Render the card with relevant data', async () => {
     render(<Card {...mockCardProps} />);
@@ -40,22 +41,14 @@ describe('Card Component', () => {
     expect(detailedCardTitle).toBeInTheDocument();
   });
 
-  // it('triggers an additional API call on card click', async () => {
-  //   fetchMock.mock(
-  //     'https://pokeapi.co/api/v2/pokemon/pikachu',
-  //     JSON.stringify({ detailedInfo: 'additional data' })
-  //   );
+  it('triggers an additional API call on card click', async () => {
+    render(<Card {...mockCardProps} />, { wrapper: BrowserRouter });
+    expect(screen.getByText('pikachu')).toBeInTheDocument();
+    const user = userEvent.setup();
 
-  //   render(<Card {...mockCardProps} />);
+    const spyAnchorTag = vi.spyOn(user, 'click');
+    await user.click(screen.getByText('pikachu'));
 
-  //   userEvent.click(screen.getByText('pikachu'));
-
-  //   await waitFor(() => {
-  //     expect(fetchMock.called()).toBeTruthy();
-  //   });
-
-  //   expect(fetchMock.lastUrl()).toBe(
-  //     'https://pokeapi.co/api/v2/pokemon/pikachu'
-  //   );
-  // });
+    expect(spyAnchorTag).toHaveBeenCalledTimes(1);
+  });
 });

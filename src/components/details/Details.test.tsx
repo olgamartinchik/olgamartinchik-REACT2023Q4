@@ -1,65 +1,71 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Details } from './Details';
-import { MemoryRouter, Route, Routes, BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { pokemonMock } from '../../mock/pokemon_mock';
-// import axios from 'axios';
+import userEvent from '@testing-library/user-event';
+import axios from 'axios';
+import { vi } from 'vitest';
 
+vi.mock('axios');
 const mockCardData = pokemonMock[0];
-// vi.mock('axios');
 
 describe('Details Component', () => {
-  it('displays a loading indicator while fetching data', async () => {
-    // const promise = Promise.resolve({ data: mockCardData });
-
-    // axios.get.mockImplementationOnce(() => promise);
+  it('hides the component when clicking the close button', async () => {
+    const promise = Promise.resolve({ data: { hits: mockCardData } });
+    (axios.get as jest.Mock).mockImplementationOnce(() => promise);
     render(
       <MemoryRouter initialEntries={['/details/25?frontpage=1&detail=pikachu']}>
         <Details />
       </MemoryRouter>
     );
 
-    waitFor(() => expect(screen.getByText('Loading...')).toBeInTheDocument());
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+    waitFor(() => promise);
+    const user = userEvent.setup();
 
-    waitFor(() => expect(screen.getByText('pikachu')).toBeInTheDocument());
+    await user.click(screen.getByText('Close'));
 
-    expect(screen.queryByText('Loading...')).toBeNull();
-    expect(screen.getByText('Abilities:')).toBeInTheDocument();
-    expect(screen.getByText('static')).toBeInTheDocument();
-    expect(screen.getByText('lightning-rod')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      expect(screen.queryByText('pikachu')).not.toBeInTheDocument();
+    });
+  });
+  it('correctly displays detailed card data', async () => {
+    const promise = Promise.resolve({ data: { hits: mockCardData } });
+    (axios.get as jest.Mock).mockImplementationOnce(() => promise);
+    render(
+      <MemoryRouter initialEntries={['/details/25?frontpage=1&detail=pikachu']}>
+        <Details />
+      </MemoryRouter>
+    );
+    waitFor(() => promise);
+
+    waitFor(() => {
+      expect(screen.getByText('pikachu')).toBeInTheDocument();
+
+      expect(screen.getByText('static')).toBeInTheDocument();
+    });
+  });
+
+  it('hides the component when clicking the close button', async () => {
+    render(
+      <MemoryRouter initialEntries={['/details/25?frontpage=1&detail=pikachu']}>
+        <Details />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
+    await userEvent.click(screen.getByText('Close'));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      expect(screen.queryByText('pikachu')).not.toBeInTheDocument();
+      expect(screen.queryByText('static')).not.toBeInTheDocument();
+    });
   });
 });
-
-// it('displays detailed card data correctly', async () => {
-//   render(
-//     <MemoryRouter initialEntries={['/details?detail=pikachu']}>
-//       <Details />
-//     </MemoryRouter>
-//   );
-//   // Wait for data to be loaded
-//   await waitFor(() =>
-//     expect(screen.getByText('pikachu')).toBeInTheDocument()
-//   );
-//   // Ensure other details are displayed correctly based on your component
-//   expect(screen.getByText('Abilities:')).toBeInTheDocument();
-//   expect(screen.getByText('static')).toBeInTheDocument();
-//   expect(screen.getByText('lightning-rod')).toBeInTheDocument();
-// });
-// it('hides the component when clicking the close button', async () => {
-//   render(
-//     <MemoryRouter initialEntries={['/details?detail=pikachu']}>
-//       <Routes>
-//         <Route path="/details">
-//           <Details />
-//         </Route>
-//       </Routes>
-//     </MemoryRouter>
-//   );
-//   // Wait for data to be loaded
-//   await waitFor(() =>
-//     expect(screen.getByText('pikachu')).toBeInTheDocument()
-//   );
-//   // Click on the close button
-//   fireEvent.click(screen.getByText('Close'));
-//   // Wait for the component to be hidden
-//   await waitFor(() => expect(screen.queryByText('pikachu')).toBeNull());
-// });

@@ -11,7 +11,8 @@ export const Pagination = () => {
   const [limitPage, setLimitPage] = useState(
     () => +(searchParams.get('limit') || 20)
   );
-  const { countPages, loading, updatePokemon } = useContext(PokemonContext);
+  const { searchValue, countPages, loading, updatePokemon } =
+    useContext(PokemonContext);
 
   useEffect(() => {
     if (countPages === 1) {
@@ -25,7 +26,7 @@ export const Pagination = () => {
       limit: limitPage.toString(),
     });
 
-    const value = localStorage.getItem('searchValue') || '';
+    const value = searchValue || localStorage.getItem('searchValue') || '';
 
     updatePokemon!(value, (currentPage * 2).toString(), limitPage.toString());
   }, [currentPage, limitPage]);

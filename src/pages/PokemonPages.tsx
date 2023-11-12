@@ -15,6 +15,7 @@ export const PokemonPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
   const [countPages, setCountPages] = useState<number | null>(null);
+  const [searchValue, setSearchValue] = useState('');
 
   if (error) {
     throw new Error(error);
@@ -86,6 +87,7 @@ export const PokemonPage = () => {
       console.log('pokemon', pokemon);
       if (pokemon && pokemon?.length !== 0) {
         localStorage.setItem('searchValue', value);
+        setSearchValue(value);
       }
     } catch (error) {
       handleError(error as Error);
@@ -98,7 +100,7 @@ export const PokemonPage = () => {
   return (
     <>
       <PokemonContext.Provider
-        value={{ countPages, pokemon, loading, updatePokemon }}
+        value={{ searchValue, countPages, pokemon, loading, updatePokemon }}
       >
         <Header />
         <ErrorBoundary>

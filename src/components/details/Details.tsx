@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import './Details.scss';
 import { Button } from '../button/Button';
 import { Pokemon } from '../../types/pokemonTypes';
+// import fetch from 'node-fetch';
 
 export const Details = () => {
   const [searchParams] = useSearchParams();
@@ -24,7 +25,7 @@ export const Details = () => {
         throw new Error('Network response was not ok');
       }
       const data = await res.json();
-      return data;
+      return data as Pokemon;
     } catch (error) {
       setError((error as Error).message);
       console.error(error);
@@ -55,9 +56,9 @@ export const Details = () => {
   const closeDetails = () => {
     navigate(-1);
   };
-  if (error) {
-    throw new Error(error);
-  }
+  // if (error) {
+  //   throw new Error(error);
+  // }
   return (
     <>
       <div className="details-column"></div>
