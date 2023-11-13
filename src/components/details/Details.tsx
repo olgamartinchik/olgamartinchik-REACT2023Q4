@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import './Details.scss';
 import { Button } from '../button/Button';
 import { Pokemon } from '../../types/pokemonTypes';
-// import fetch from 'node-fetch';
+import axios from 'axios';
 
 export const Details = () => {
   const [searchParams] = useSearchParams();
@@ -18,14 +18,26 @@ export const Details = () => {
   const fetchData = async (detailQuery: string): Promise<Pokemon | void> => {
     const URL = `https://pokeapi.co/api/v2/pokemon/${detailQuery}`;
 
-    try {
-      const res = await fetch(URL);
+    // try {
+    //   const res = await fetch(URL);
 
-      if (res.status !== 200) {
+    //   if (res.status !== 200) {
+    //     throw new Error('Network response was not ok');
+    //   }
+    //   const data = await res.json();
+    //   return data as Pokemon;
+    // } catch (error) {
+    //   setError((error as Error).message);
+    //   console.error(error);
+    // }
+    try {
+      const response = await axios.get(URL);
+      console.log('response', response);
+      if (response.status !== 200) {
         throw new Error('Network response was not ok');
       }
-      const data = await res.json();
-      return data as Pokemon;
+
+      return response.data as Pokemon;
     } catch (error) {
       setError((error as Error).message);
       console.error(error);
@@ -56,9 +68,9 @@ export const Details = () => {
   const closeDetails = () => {
     navigate(-1);
   };
-  // if (error) {
-  //   throw new Error(error);
-  // }
+  if (error) {
+    throw new Error(error);
+  }
   return (
     <>
       <div className="details-column"></div>

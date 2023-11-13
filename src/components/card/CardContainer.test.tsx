@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { CardContainer } from './CardContainer';
-import { pokemonMock, pokemonDataMock } from '../../mock/pokemon_mock';
+import { pokemonMock, pokemonDataMock } from '../../mocks/pokemon_mock';
 import { PokemonContext } from '../../context/PokemonContext';
 
 describe('CardContainer Component', () => {

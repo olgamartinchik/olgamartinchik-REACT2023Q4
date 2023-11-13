@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from '../components/header/Header';
 import { CardContainer } from '../components/card/CardContainer';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
@@ -17,9 +18,11 @@ export const PokemonPage = () => {
   const [countPages, setCountPages] = useState<number | null>(null);
   const [searchValue, setSearchValue] = useState('');
 
-  if (error) {
-    throw new Error(error);
-  }
+  useEffect(() => {
+    if (error) {
+      throw new Error(error);
+    }
+  }, [error]);
 
   const fetchData = async (
     searchQuery: string,
@@ -32,13 +35,13 @@ export const PokemonPage = () => {
       : `${baseUrl}?offset=${page}0&limit=${limit}`;
 
     try {
-      const res = await fetch(URL);
+      const response = await axios.get(URL);
 
-      if (res.status !== 200) {
+      if (response.status !== 200) {
         throw new Error('Network response was not ok');
       }
-      const data = await res.json();
-      return data;
+
+      return response.data;
     } catch (error) {
       handleError(error as Error);
     }
@@ -58,8 +61,8 @@ export const PokemonPage = () => {
       setCountPages(data.count);
       return Promise.all(
         results.map(async (result: { url: string }) => {
-          const res = await fetch(result.url);
-          return res.json();
+          const response = await axios.get(result.url);
+          return response.data;
         })
       );
     } else {
@@ -84,7 +87,7 @@ export const PokemonPage = () => {
       setLoading(false);
       setError(null);
       setPokemon(pokemon!);
-      console.log('pokemon', pokemon);
+
       if (pokemon && pokemon?.length !== 0) {
         localStorage.setItem('searchValue', value);
         setSearchValue(value);
@@ -97,6 +100,7 @@ export const PokemonPage = () => {
   const updatePokemon = (searchValue: string, page: string, limit: string) => {
     getPokemon(searchValue, page, limit);
   };
+
   return (
     <>
       <PokemonContext.Provider

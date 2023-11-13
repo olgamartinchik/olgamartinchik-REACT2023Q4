@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { pokemonMock } from '../../mock/pokemon_mock';
+import { pokemonMock } from '../../mocks/pokemon_mock';
 import { Card, CardProps } from './Card';
 import { BrowserRouter } from 'react-router-dom';
 

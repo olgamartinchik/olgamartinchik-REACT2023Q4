@@ -2,7 +2,7 @@ import { PokemonData, Pokemon } from '../types/pokemonTypes';
 
 export const pokemonMock: Pokemon[] = [
   {
-    id: 1,
+    id: 25,
     name: 'pikachu',
     sprites: {
       back_default:
@@ -20,7 +20,7 @@ export const pokemonMock: Pokemon[] = [
     ],
   },
   {
-    id: 2,
+    id: 4,
     name: 'charmander',
     sprites: {
       back_default:
