@@ -1,4 +1,4 @@
-import { PokemonData, Pokemon } from '../types/pokemonTypes';
+import { Pokemon, PokemonData } from '../store';
 
 export const pokemonMock: Pokemon[] = [
   {

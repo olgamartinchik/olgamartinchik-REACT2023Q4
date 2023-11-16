@@ -1,16 +1,30 @@
-import { useContext, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from './Card';
 import { Button } from '../button/Button';
-import { Link, Outlet, useSearchParams } from 'react-router-dom';
-import { PokemonContext } from '../../context/PokemonContext';
+import { Outlet } from 'react-router-dom';
+import { useGetPokemonListQuery } from '../../store';
+import { useAppSelector } from '../../store/store';
 
 export const CardContainer = () => {
   const [isHasError, setIsHasError] = useState<boolean>(false);
   const [handleError, setHandleError] = useState<null | string>(null);
-  const [searchParams] = useSearchParams();
-  const { pokemon, loading } = useContext(PokemonContext);
-
-  const postQuery = searchParams.get('offset');
+  const { currentPage, limitPage } = useAppSelector(
+    (state) => state.pagination
+  );
+  const { data, error, isLoading, isError, isSuccess } = useGetPokemonListQuery(
+    {
+      page: (currentPage * 2).toString(),
+      limit: limitPage.toString(),
+    }
+  );
+  const { searchValue } = useAppSelector((state) => state.search);
+  // if (isError) {
+  //   throw new Error(`Handle error message. ${error}. Please, reload page.`);
+  // }
+  useEffect(() => {
+    console.log('searchValue', searchValue);
+    console.log('data', data);
+  }, []);
 
   if (isHasError) {
     throw new Error(
@@ -27,34 +41,19 @@ export const CardContainer = () => {
       setHandleError((error as Error).message);
     }
   };
-  {
-  }
+
   return (
     <div>
       <h1>pokemon</h1>
-
       <Button handleButton={throwError} text={'Throw Error'} />
-
       <section className="container">
         <div className="container__cards">
-          {loading ? (
-            <h3>Loading...</h3>
-          ) : !pokemon || !pokemon.length ? (
-            <p>Pokemon were not found</p>
-          ) : (
-            pokemon.map((item) => (
-              <Link
-                to={`/details/${item.id}?frontpage=${postQuery}&detail=${item.name}`}
-                key={item.id}
-              >
-                <Card
-                  name={item.name}
-                  img={item.sprites?.other?.dream_world.front_default}
-                  abilities={item.abilities}
-                />
-              </Link>
-            ))
-          )}
+          {!searchValue && isLoading && <h3>Loading...</h3>}
+
+          {!searchValue &&
+            isSuccess &&
+            data?.map((item) => <Card key={item.name} name={item.name} />)}
+          {searchValue && <Card name={searchValue} />}
         </div>
 
         <div className="container__details">

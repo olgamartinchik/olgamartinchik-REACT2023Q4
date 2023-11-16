@@ -4,14 +4,20 @@ import './Header.scss';
 import { Button } from '../button/Button';
 import { PokemonContext } from '../../context/PokemonContext';
 import { useSearchParams } from 'react-router-dom';
+import { useAppSelector } from '../../store/store';
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from '../../store';
 
 export const Header = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState('');
-  const { updatePokemon, searchValue } = useContext(PokemonContext);
+  // const { updatePokemon, searchValue } = useContext(PokemonContext);
+  const dispatch = useDispatch();
+  const { searchValue } = useAppSelector((state) => state.search);
 
   useEffect(() => {
-    setValue(searchValue || localStorage.getItem('searchValue') || '');
+    dispatch(setSearchValue(localStorage.getItem('searchValue') || ''));
+    setValue(localStorage.getItem('searchValue') || '');
   }, []);
 
   const handleChange = (newValue: string) => {
@@ -19,9 +25,14 @@ export const Header = () => {
   };
 
   const handleSearch = () => {
-    const offset = searchParams.get('offset') || '';
-    const limit = searchParams.get('limit') || '';
-    updatePokemon!(value, offset, limit);
+    // const offset = searchParams.get('offset') || '';
+    // const limit = searchParams.get('limit') || '';
+    // updatePokemon!(value, offset, limit);
+    // setSearchParams({
+    //   search: value,
+    // });
+    localStorage.setItem('searchValue', value);
+    dispatch(setSearchValue(value));
   };
 
   return (
@@ -31,5 +42,3 @@ export const Header = () => {
     </header>
   );
 };
-
-export default Header;
