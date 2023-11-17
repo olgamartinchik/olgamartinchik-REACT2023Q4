@@ -1,26 +1,18 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './Pagination.scss';
 import { setCurrentPage, setLimitPage } from '../../store';
 import {
   COUNT_PAGE,
   DEFAULT_VISIBLE_PAGES,
+  START_LIMIT,
   START_PAGE,
 } from '../constants/countPage';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../store/store';
-// import { setCurrentPage } from '../../store/pagination/pagination.slice';
 
 export const Pagination = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [currentPage, setCurrentPage] = useState(
-  //   () => +(searchParams.get('offset') || 1)
-  // );
-  // const [limitPage, setLimitPage] = useState(
-  //   () => +(searchParams.get('limit') || 20)
-  // );
-  // const { searchValue, countPages, loading, updatePokemon } =
-  //   useContext(PokemonContext);
 
   const dispatch = useDispatch();
 
@@ -28,41 +20,37 @@ export const Pagination = () => {
     (state) => state.pagination
   );
 
-  // const { data, error, isLoading, isError, isSuccess } = useGetPokemonListQuery(
-  //   {
-  //     page: currentPage.toString(),
-  //     limit: limitPage.toString(),
-  //   }
-  // );
+  console.log('currentPage', currentPage);
+  console.log('limitPage', limitPage);
 
-  // useEffect(() => {
-  //   if (data?.count === 1) {
-  //     setCurrentPage(1);
-  //   }
-  // }, [countPages]);
   const offset = searchParams.get('offset');
   const limit = searchParams.get('limit');
   useEffect(() => {
-    // const offset = searchParams.get('offset');
-    // const limit = searchParams.get('limit');
-
-    // if (limit && parseInt(limit) !== limitPage) {
-    //   dispatch(setCurrentPage(START_PAGE)); //
-    //   console.log('change url limit');
-    // }
-    dispatch(setLimitPage(+limit!));
-    dispatch(setCurrentPage(+offset!));
+    if (limit) {
+      dispatch(setLimitPage(+limit));
+    }
+    if (offset) {
+      dispatch(setCurrentPage(+offset));
+    }
   }, [offset, limit]);
-  // useEffect(() => {
-  //   dispatch(setCurrentPage(START_PAGE));
-  // }, [limit]);
 
   useEffect(() => {
     setSearchParams({
       offset: currentPage.toString(),
       limit: limitPage.toString(),
     });
-  }, [currentPage, limitPage]);
+  }, [currentPage, limitPage, setSearchParams]);
+  // useEffect(() => {
+  //   dispatch(setLimitPage(+limit! || START_LIMIT));
+  //   dispatch(setCurrentPage(+offset! || START_PAGE));
+  // }, [offset, limit]);
+
+  // useEffect(() => {
+  //   setSearchParams({
+  //     offset: currentPage.toString(),
+  //     limit: limitPage.toString(),
+  //   });
+  // }, [currentPage, limitPage]);
 
   const generatePageNumbers = (start: number, end: number) => {
     const pageNumbers = [];
@@ -85,7 +73,6 @@ export const Pagination = () => {
   };
 
   const handlerSetLimitPage = (e: ChangeEvent<HTMLSelectElement>) => {
-    // setLimitPage(parseInt(e.target.value, 10));
     dispatch(setLimitPage(parseInt(e.target.value, 10)));
     dispatch(setCurrentPage(START_PAGE));
   };

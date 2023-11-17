@@ -16,8 +16,8 @@ export const Header = () => {
   const { searchValue } = useAppSelector((state) => state.search);
 
   useEffect(() => {
-    dispatch(setSearchValue(localStorage.getItem('searchValue') || ''));
-    setValue(localStorage.getItem('searchValue') || '');
+    // dispatch(setSearchValue(localStorage.getItem('searchValue') || ''));
+    setValue(searchValue);
   }, []);
 
   const handleChange = (newValue: string) => {
@@ -25,12 +25,6 @@ export const Header = () => {
   };
 
   const handleSearch = () => {
-    // const offset = searchParams.get('offset') || '';
-    // const limit = searchParams.get('limit') || '';
-    // updatePokemon!(value, offset, limit);
-    // setSearchParams({
-    //   search: value,
-    // });
     localStorage.setItem('searchValue', value);
     dispatch(setSearchValue(value));
   };

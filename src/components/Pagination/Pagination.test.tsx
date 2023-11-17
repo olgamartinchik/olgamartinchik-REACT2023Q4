@@ -1,17 +1,14 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { PokemonContext } from '../../context/PokemonContext';
+
 import { Pagination } from './Pagination';
+import { renderWithProviders } from '../../test/test-utils';
 
 describe('Pagination Component', () => {
   it('Updates URL query parameter when page changes', () => {
-    render(
+    renderWithProviders(
       <BrowserRouter>
-        <PokemonContext.Provider
-          value={{ updatePokemon: vi.fn(), countPages: 5, loading: false }}
-        >
-          <Pagination />
-        </PokemonContext.Provider>
+        <Pagination />
       </BrowserRouter>
     );
 

@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const SEARCH_VALUE_SLICE = 'SearchState';
-interface PaginationState {
+interface SearchState {
   searchValue: string;
+  isLoading: boolean;
 }
 
-const initialState: PaginationState = {
-  searchValue: '',
+const initialState: SearchState = {
+  searchValue: localStorage.getItem('searchValue') || '',
+  isLoading: false,
 };
 
 const searchValueSlice = createSlice({
@@ -16,8 +18,11 @@ const searchValueSlice = createSlice({
     setSearchValue(state, action: PayloadAction<string>) {
       state.searchValue = action.payload;
     },
+    setSearchLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
+    },
   },
 });
 
-export const { setSearchValue } = searchValueSlice.actions;
+export const { setSearchValue, setSearchLoading } = searchValueSlice.actions;
 export const searchValueReducer = searchValueSlice.reducer;

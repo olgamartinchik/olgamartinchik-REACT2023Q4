@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { START_LIMIT, START_PAGE } from '../../components/constants/countPage';
 
 const PAGINATION_SLICE = 'PaginationState';
 interface PaginationState {
   currentPage: number;
   limitPage: number;
+  isLoading: boolean;
 }
 
 const initialState: PaginationState = {
-  currentPage: 1,
-  limitPage: 20,
+  currentPage: START_PAGE,
+  limitPage: START_LIMIT,
+  isLoading: false,
 };
 
 const paginationSlice = createSlice({
@@ -21,8 +24,12 @@ const paginationSlice = createSlice({
     setLimitPage(state, action: PayloadAction<number>) {
       state.limitPage = action.payload;
     },
+    setPaginationLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
+    },
   },
 });
 
-export const { setCurrentPage, setLimitPage } = paginationSlice.actions;
+export const { setCurrentPage, setLimitPage, setPaginationLoading } =
+  paginationSlice.actions;
 export const paginationReducer = paginationSlice.reducer;

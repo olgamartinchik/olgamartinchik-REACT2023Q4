@@ -1,32 +1,21 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './Details.scss';
 import { Button } from '../button/Button';
 import { useGetPokemonByNameQuery } from '../../store';
+import { FC } from 'react';
 
-export const Details = () => {
-  const [searchParams] = useSearchParams();
-
+export const Details: FC = () => {
+  // const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const detailQuery = searchParams.get('detail');
-  const { data, error, isLoading, isError, isSuccess } =
-    useGetPokemonByNameQuery(detailQuery || '');
+  const { itemId } = useParams();
 
-  if (!detailQuery) {
-    navigate(-1);
-  }
+  const { data, error, isLoading, isError, isSuccess } =
+    useGetPokemonByNameQuery(itemId!);
 
   const closeDetails = () => {
-    navigate(-1);
+    navigate('/');
   };
-  if (isError) {
-    if ('status' in error && 'data' in error) {
-      throw new Error(
-        `Fetch error: ${error.status} - ${JSON.stringify(error.data)}`
-      );
-    } else {
-      throw new Error('An unknown error occurred.');
-    }
-  }
+  console.log('data', data);
   return (
     <>
       <div className="details-column"></div>

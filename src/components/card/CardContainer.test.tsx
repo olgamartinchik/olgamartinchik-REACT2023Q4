@@ -1,50 +1,43 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { CardContainer } from './CardContainer';
-import { pokemonMock, pokemonDataMock } from '../../mocks/pokemon_mock';
-import { PokemonContext } from '../../context/PokemonContext';
+import { renderWithProviders } from '../../test/test-utils';
+import userEvent from '@testing-library/user-event';
+import { Header } from '../header/Header';
 
 describe('CardContainer Component', () => {
   test('Renders the specified number of cards', async () => {
-    render(
-      <BrowserRouter>
-        <PokemonContext.Provider
-          value={{
-            pokemon: pokemonMock,
-            loading: false,
-            countPages: pokemonDataMock.count,
-            updatePokemon: () => {},
-          }}
-        >
-          <CardContainer />
-        </PokemonContext.Provider>
-      </BrowserRouter>
+    renderWithProviders(
+      <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
+        <CardContainer />
+      </MemoryRouter>
     );
+    await waitFor(() => {});
 
     await waitFor(() => {
       const cards = screen.getAllByRole('link');
-      expect(cards).toHaveLength(2);
+      expect(cards).toHaveLength(3);
     });
   });
 
   test('Displays an appropriate message if no cards are present', async () => {
-    render(
+    renderWithProviders(
       <BrowserRouter>
-        <PokemonContext.Provider
-          value={{
-            pokemon: [],
-            loading: false,
-            countPages: 1,
-            updatePokemon: () => {},
-          }}
-        >
-          <CardContainer />
-        </PokemonContext.Provider>
+        <Header />
+        <CardContainer />
       </BrowserRouter>
     );
-
+    const input = screen.getByRole('textbox');
+    await userEvent.type(input, 'pikachu123');
+    const searchButton = screen.getByText('Search');
+    fireEvent.click(searchButton);
+    await waitFor(() => {});
     await waitFor(() => {
-      const noCardsMessage = screen.getByText('Pokemon were not found');
+      screen.debug();
+
+      const noCardsMessage = screen.queryByText(
+        /Pokemon PIKACHU123 was not found!/i
+      );
       expect(noCardsMessage).toBeInTheDocument();
     });
   });

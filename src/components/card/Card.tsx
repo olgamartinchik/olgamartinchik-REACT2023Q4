@@ -14,19 +14,21 @@ export const Card: FC<CardProps> = ({ name }) => {
   const { data, error, isLoading, isError, isSuccess } =
     useGetPokemonByNameQuery(name);
 
-  useEffect(() => {
-    // console.log('data', data);
-  }, [data]);
+  // useEffect(() => {
+  //   // console.log('data', data);
+  // }, [data]);
   // if (isError) {
   //   throw new Error(`Handle error message. ${error}. Please, reload page.`);
   // }
-  const postQuery = searchParams.get('offset');
+  // const postQuery = searchParams.get('offset');
+  console.log('data test', data);
+  console.log('name test', name);
   return (
     <>
       {isError && <h3>Pokemon {searchValue.toUpperCase()} was not found!</h3>}
       {isLoading && <h3>Loading...</h3>}
       {isSuccess && (
-        <Link to={`/details/${data?.id}?frontpage=${postQuery}&detail=${name}`}>
+        <Link to={`/details/${name}`}>
           <div className="card">
             <div className="card-img">
               <img

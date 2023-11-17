@@ -1,46 +1,52 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { PokemonContext } from '../../context/PokemonContext';
-import Header from './Header';
+import { Header } from './Header';
+import { renderWithProviders } from '../../test/test-utils';
 
 describe('Header Component', () => {
+  // beforeEach(() => {
+  //   localStorage.clear();
+  // });
+
   it('saves entered value to local storage on button click', async () => {
-    render(
+    renderWithProviders(
       <BrowserRouter>
-        <PokemonContext.Provider
-          value={{ updatePokemon: vi.fn(), countPages: 5, loading: false }}
-        >
-          <Header />
-        </PokemonContext.Provider>
+        <Header />
       </BrowserRouter>
     );
 
     const input = screen.getByRole('textbox');
-    userEvent.type(input, 'pikachu');
+    await userEvent.type(input, 'pikachu');
 
     const searchButton = screen.getByText('Search');
     fireEvent.click(searchButton);
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(localStorage.getItem('searchValue')).toBe('pikachu');
     });
   });
 
-  it('retrieves the value from local storage upon mounting', () => {
+  it('retrieves the value from local storage upon mounting', async () => {
     localStorage.setItem('searchValue', 'charmander');
 
-    render(
+    renderWithProviders(
       <BrowserRouter>
-        <PokemonContext.Provider
-          value={{ updatePokemon: vi.fn(), countPages: 5, loading: false }}
-        >
-          <Header />
-        </PokemonContext.Provider>
-      </BrowserRouter>
+        <Header />
+      </BrowserRouter>,
+      {
+        preloadedState: {
+          search: {
+            searchValue: localStorage.getItem('searchValue') || '',
+            isLoading: false,
+          },
+        },
+      }
     );
 
-    const input = screen.getByRole('textbox');
-    expect(input).toHaveValue('charmander');
+    await waitFor(() => {
+      const input = screen.getByRole('textbox');
+      expect(input).toHaveValue('charmander');
+    });
   });
 });
