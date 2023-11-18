@@ -38,7 +38,7 @@ export const pokemonMock: Pokemon[] = [
     ],
   },
 ];
-
+// data?.sprites?.other?.dream_world.front_default
 export const pokemonDataMock: PokemonData = {
   count: 10,
   next: '',

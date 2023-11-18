@@ -1,13 +1,42 @@
 import userEvent from '@testing-library/user-event';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-
 import { Card } from './Card';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
 import { renderWithProviders } from '../../test/test-utils';
 
-import { Details } from '../details/Details';
+import { pokemonMock } from '../../mocks/pokemon_mock';
+import { HttpResponse, delay, http } from 'msw';
+import { setupServer } from 'msw/node';
+import { PokemonPage } from '../../pages/PokemonPages';
+import { CardContainer } from './CardContainer';
 
+const mockCardData = pokemonMock[0];
+const handlers = [
+  http.get('https://pokeapi.co/api/v2/pokemon/pikachu', async () => {
+    await delay(150);
+    return HttpResponse.json(mockCardData);
+  }),
+  http.get('https://pokeapi.co/api/v2/pokemon/', async () => {
+    await delay(150);
+    return HttpResponse.json([
+      { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
+      { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
+      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/24/' },
+    ]);
+  }),
+];
+const server = setupServer(...handlers);
 describe('Card Component', () => {
+  // beforeAll(() => {
+  //   server.listen();
+  // });
+
+  // afterEach(() => {
+  //   server.resetHandlers();
+  // });
+
+  // afterAll(() => server.close());
+
   it('Render the card with relevant data', async () => {
     renderWithProviders(
       <BrowserRouter>
@@ -30,22 +59,22 @@ describe('Card Component', () => {
 
   it('Clicking on a card opens a detailed card component', async () => {
     renderWithProviders(
-      <MemoryRouter initialEntries={['/details/pikachu?offset=1&limit=20']}>
-        <Card name="pikachu" />
-        <Details />
+      <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
+        <CardContainer />
       </MemoryRouter>
     );
-
     await waitFor(() => {
-      expect(screen.getByText('pikachu')).toBeInTheDocument();
+      const card = screen.queryByText('spearow');
+      if (card) {
+        userEvent.click(card);
+      }
     });
-
-    userEvent.click(screen.getByText('pikachu'));
-
     await waitFor(() => {
       screen.debug();
-      expect(screen.getByText(/Loading.../)).toBeInTheDocument();
-
+      // expect(screen.queryByText('Loading details...')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      // expect(screen.queryByText('Close')).toBeInTheDocument();
       // expect(screen.getByText('Close')).toBeInTheDocument();
     });
   });

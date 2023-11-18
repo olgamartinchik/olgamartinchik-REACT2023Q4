@@ -21,7 +21,7 @@ export const Card: FC<CardProps> = ({ name }) => {
   //   throw new Error(`Handle error message. ${error}. Please, reload page.`);
   // }
   // const postQuery = searchParams.get('offset');
-  console.log('data test', data);
+  console.log('card data', data);
   console.log('name test', name);
   return (
     <>

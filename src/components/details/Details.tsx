@@ -8,19 +8,21 @@ export const Details: FC = () => {
   // const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { itemId } = useParams();
-
+  const pokemonName = itemId || 'pikachu';
   const { data, error, isLoading, isError, isSuccess } =
-    useGetPokemonByNameQuery(itemId!);
+    useGetPokemonByNameQuery(pokemonName);
 
   const closeDetails = () => {
     navigate('/');
   };
-  console.log('data', data);
+  console.log('detail data', data?.name, data);
+  console.log('pokemonName', pokemonName);
+  console.log('itemId', itemId);
   return (
     <>
       <div className="details-column"></div>
       <div className="overlay" onClick={closeDetails}>
-        {isLoading && <h3 className="loader">Loading...</h3>}
+        {isLoading && <h3 className="loader">Loading details...</h3>}
 
         {isSuccess && (
           <div className="details">

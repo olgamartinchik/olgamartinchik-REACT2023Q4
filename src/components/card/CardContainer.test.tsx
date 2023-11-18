@@ -4,7 +4,19 @@ import { CardContainer } from './CardContainer';
 import { renderWithProviders } from '../../test/test-utils';
 import userEvent from '@testing-library/user-event';
 import { Header } from '../header/Header';
-
+import { HttpResponse, delay, http } from 'msw';
+import { setupServer } from 'msw/node';
+const handlers = [
+  http.get('https://pokeapi.co/api/v2/pokemon/', async () => {
+    await delay(150);
+    return HttpResponse.json([
+      { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
+      { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
+      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/24/' },
+    ]);
+  }),
+];
+const server = setupServer(...handlers);
 describe('CardContainer Component', () => {
   test('Renders the specified number of cards', async () => {
     renderWithProviders(
@@ -22,19 +34,17 @@ describe('CardContainer Component', () => {
 
   test('Displays an appropriate message if no cards are present', async () => {
     renderWithProviders(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
         <Header />
         <CardContainer />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     const input = screen.getByRole('textbox');
     await userEvent.type(input, 'pikachu123');
     const searchButton = screen.getByText('Search');
     fireEvent.click(searchButton);
-    await waitFor(() => {});
+    expect(screen.queryByText('Loading...')).toBeInTheDocument();
     await waitFor(() => {
-      screen.debug();
-
       const noCardsMessage = screen.queryByText(
         /Pokemon PIKACHU123 was not found!/i
       );
