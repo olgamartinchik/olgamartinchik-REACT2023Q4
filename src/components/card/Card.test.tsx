@@ -9,6 +9,7 @@ import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { PokemonPage } from '../../pages/PokemonPages';
 import { CardContainer } from './CardContainer';
+import { Details } from '../details/Details';
 
 const mockCardData = pokemonMock[0];
 const handlers = [
@@ -61,6 +62,7 @@ describe('Card Component', () => {
     renderWithProviders(
       <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
         <CardContainer />
+        <Details />
       </MemoryRouter>
     );
     await waitFor(() => {
@@ -71,11 +73,10 @@ describe('Card Component', () => {
     });
     await waitFor(() => {
       screen.debug();
-      // expect(screen.queryByText('Loading details...')).toBeInTheDocument();
+      expect(screen.queryByText('Loading details...')).toBeInTheDocument();
     });
     await waitFor(() => {
-      // expect(screen.queryByText('Close')).toBeInTheDocument();
-      // expect(screen.getByText('Close')).toBeInTheDocument();
+      expect(screen.getByText('Close')).toBeInTheDocument();
     });
   });
 
