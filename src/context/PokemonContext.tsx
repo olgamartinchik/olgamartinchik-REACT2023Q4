@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Pokemon } from '../types/pokemonTypes';
+import { Pokemon } from '../store';
 
 interface PokemonContext {
   searchValue?: string;

@@ -20,9 +20,6 @@ export const Pagination = () => {
     (state) => state.pagination
   );
 
-  console.log('currentPage', currentPage);
-  console.log('limitPage', limitPage);
-
   const offset = searchParams.get('offset');
   const limit = searchParams.get('limit');
   useEffect(() => {
