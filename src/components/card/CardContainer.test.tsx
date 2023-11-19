@@ -48,9 +48,6 @@ describe('CardContainer Component', () => {
       <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
         <Header />
         <CardContainer />
-        {pokemonDataMock.map((data) => (
-          <Card key={data.name} name={data.name} />
-        ))}
       </MemoryRouter>
     );
     const input = screen.getByRole('textbox');
