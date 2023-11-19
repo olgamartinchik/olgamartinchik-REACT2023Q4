@@ -18,15 +18,6 @@ export const CardContainer = () => {
     }
   );
   const { searchValue } = useAppSelector((state) => state.search);
-  // if (isError) {
-  //   throw new Error(`Handle error message. ${error}. Please, reload page.`);
-  // }
-  // useEffect(() => {
-  //   // console.log('currentPage', currentPage);
-  //   // console.log('limitPage', limitPage);
-  //   console.log('searchValue', searchValue);
-  //   console.log('data', data);
-  // }, []);
 
   if (isHasError) {
     throw new Error(

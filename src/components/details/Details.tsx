@@ -5,7 +5,6 @@ import { useGetPokemonByNameQuery } from '../../store';
 import { FC } from 'react';
 
 export const Details: FC = () => {
-  // const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { itemId } = useParams();
   const pokemonName = itemId || 'pikachu';
@@ -15,9 +14,7 @@ export const Details: FC = () => {
   const closeDetails = () => {
     navigate('/');
   };
-  console.log('detail data', data?.name, data);
-  console.log('pokemonName', pokemonName);
-  console.log('itemId', itemId);
+
   return (
     <>
       <div className="details-column"></div>

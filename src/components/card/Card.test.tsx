@@ -1,13 +1,12 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Card } from './Card';
-import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { renderWithProviders } from '../../test/test-utils';
 
-import { pokemonMock } from '../../mocks/pokemon_mock';
+import { pokemonDataMock, pokemonMock } from '../../mocks/pokemon_mock';
 import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
-import { PokemonPage } from '../../pages/PokemonPages';
 import { CardContainer } from './CardContainer';
 import { Details } from '../details/Details';
 
@@ -19,25 +18,11 @@ const handlers = [
   }),
   http.get('https://pokeapi.co/api/v2/pokemon/', async () => {
     await delay(150);
-    return HttpResponse.json([
-      { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-      { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
-      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/24/' },
-    ]);
+    return HttpResponse.json(pokemonDataMock);
   }),
 ];
 const server = setupServer(...handlers);
 describe('Card Component', () => {
-  // beforeAll(() => {
-  //   server.listen();
-  // });
-
-  // afterEach(() => {
-  //   server.resetHandlers();
-  // });
-
-  // afterAll(() => server.close());
-
   it('Render the card with relevant data', async () => {
     renderWithProviders(
       <BrowserRouter>

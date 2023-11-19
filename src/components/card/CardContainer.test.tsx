@@ -6,22 +6,33 @@ import userEvent from '@testing-library/user-event';
 import { Header } from '../header/Header';
 import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
+import { Card } from './Card';
+import { pokemonDataMock } from '../../mocks/pokemon_mock';
+
 const handlers = [
   http.get('https://pokeapi.co/api/v2/pokemon/', async () => {
     await delay(150);
-    return HttpResponse.json([
-      { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-      { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
-      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/24/' },
-    ]);
+    return HttpResponse.json(pokemonDataMock);
   }),
 ];
 const server = setupServer(...handlers);
 describe('CardContainer Component', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
+  });
+
+  afterAll(() => server.close());
   test('Renders the specified number of cards', async () => {
     renderWithProviders(
       <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
         <CardContainer />
+        {pokemonDataMock.map((data) => (
+          <Card key={data.name} name={data.name} />
+        ))}
       </MemoryRouter>
     );
     await waitFor(() => {});
@@ -37,13 +48,19 @@ describe('CardContainer Component', () => {
       <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
         <Header />
         <CardContainer />
+        {pokemonDataMock.map((data) => (
+          <Card key={data.name} name={data.name} />
+        ))}
       </MemoryRouter>
     );
     const input = screen.getByRole('textbox');
     await userEvent.type(input, 'pikachu123');
     const searchButton = screen.getByText('Search');
     fireEvent.click(searchButton);
-    expect(screen.queryByText('Loading...')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).toBeInTheDocument();
+    });
+    await waitFor(() => {});
     await waitFor(() => {
       const noCardsMessage = screen.queryByText(
         /Pokemon PIKACHU123 was not found!/i

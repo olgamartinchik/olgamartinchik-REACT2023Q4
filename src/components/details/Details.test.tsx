@@ -29,13 +29,14 @@ describe('Details Component', () => {
 
   it('Check loader', async () => {
     renderWithProviders(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/details/pikachu']}>
+        <PokemonPage />
         <Details />
       </MemoryRouter>
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Loading.../)).toBeInTheDocument();
+      expect(screen.getByText(/Loading details.../)).toBeInTheDocument();
     });
   });
   it('hides the component when clicking the close button', async () => {

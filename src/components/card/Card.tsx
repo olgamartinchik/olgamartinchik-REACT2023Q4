@@ -8,21 +8,10 @@ export interface CardProps {
   name: string;
 }
 export const Card: FC<CardProps> = ({ name }) => {
-  const [searchParams] = useSearchParams();
-
   const { searchValue } = useAppSelector((state) => state.search);
   const { data, error, isLoading, isError, isSuccess } =
     useGetPokemonByNameQuery(name);
 
-  // useEffect(() => {
-  //   // console.log('data', data);
-  // }, [data]);
-  // if (isError) {
-  //   throw new Error(`Handle error message. ${error}. Please, reload page.`);
-  // }
-  // const postQuery = searchParams.get('offset');
-  console.log('card data', data);
-  console.log('name test', name);
   return (
     <>
       {isError && <h3>Pokemon {searchValue.toUpperCase()} was not found!</h3>}
