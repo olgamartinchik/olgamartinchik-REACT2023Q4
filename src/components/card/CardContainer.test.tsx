@@ -17,22 +17,10 @@ const handlers = [
 ];
 const server = setupServer(...handlers);
 describe('CardContainer Component', () => {
-  beforeAll(() => {
-    server.listen();
-  });
-
-  afterEach(() => {
-    server.resetHandlers();
-  });
-
-  afterAll(() => server.close());
   test('Renders the specified number of cards', async () => {
     renderWithProviders(
       <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
         <CardContainer />
-        {pokemonDataMock.map((data) => (
-          <Card key={data.name} name={data.name} />
-        ))}
       </MemoryRouter>
     );
     await waitFor(() => {});
