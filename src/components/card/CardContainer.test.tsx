@@ -19,15 +19,17 @@ const server = setupServer(...handlers);
 describe('CardContainer Component', () => {
   test('Renders the specified number of cards', async () => {
     renderWithProviders(
-      <MemoryRouter initialEntries={['/?offset=1&limit=3']}>
+      <MemoryRouter initialEntries={['/?offset=1&limit=1']}>
         <CardContainer />
       </MemoryRouter>
     );
-    await waitFor(() => {});
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).toBeInTheDocument();
+    });
 
     await waitFor(() => {
       const cards = screen.getAllByRole('link');
-      expect(cards).toHaveLength(3);
+      expect(cards).toHaveLength(1);
     });
   });
 
