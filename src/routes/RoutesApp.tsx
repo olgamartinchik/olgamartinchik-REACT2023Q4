@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import { PokemonPage } from '../pages/PokemonPages';
+import { PokemonPage } from '../pages/pokemonPages';
 import { Details } from '../components/details/Details';
-import NotFound from '../pages/NotFound';
+import NotFound from '../pages/notFound';
 
 export const RoutesApp = () => {
   return (

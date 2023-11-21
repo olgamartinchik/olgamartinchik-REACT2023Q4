@@ -2,7 +2,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
-import NotFound from './NotFound';
+import NotFound from './notFound';
 describe('NotFound Component', () => {
   it('displays the 404 page for invalid route', () => {
     render(

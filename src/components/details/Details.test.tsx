@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
 import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
-import { PokemonPage } from '../../pages/PokemonPages';
+import { PokemonPage } from '../../pages/pokemonPages';
 
 const mockCardData = pokemonMock[0];
 const handlers = [
