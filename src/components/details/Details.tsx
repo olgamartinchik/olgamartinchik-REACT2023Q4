@@ -7,14 +7,14 @@ import { FC } from 'react';
 export const Details: FC = () => {
   const navigate = useNavigate();
   const { itemId } = useParams();
-  const pokemonName = itemId || 'pikachu';
+  const pokemonName = itemId;
   const { data, error, isLoading, isError, isSuccess } =
-    useGetPokemonByNameQuery(pokemonName);
+    useGetPokemonByNameQuery(itemId!);
 
   const closeDetails = () => {
     navigate('/');
   };
-
+  console.log('itemId', itemId);
   return (
     <>
       <div className="details-column"></div>

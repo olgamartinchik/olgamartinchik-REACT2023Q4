@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Details } from './Details';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { pokemonMock } from '../../mocks/pokemon_mock';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
@@ -9,8 +9,9 @@ import { setupServer } from 'msw/node';
 import { PokemonPage } from '../../pages/PokemonPages';
 
 const mockCardData = pokemonMock[0];
+const pokemonName = 'pikachu';
 const handlers = [
-  http.get('https://pokeapi.co/api/v2/pokemon/pikachu', async () => {
+  http.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`, async () => {
     await delay(150);
     return HttpResponse.json(mockCardData);
   }),
@@ -29,9 +30,12 @@ describe('Details Component', () => {
 
   it('Check loader', async () => {
     renderWithProviders(
-      <MemoryRouter initialEntries={['/details/pikachu']}>
-        <PokemonPage />
-        <Details />
+      <MemoryRouter initialEntries={[`/details/${pokemonName}`]}>
+        <Routes>
+          <Route path="/" element={<PokemonPage />}>
+            <Route path="details/:itemId" element={<Details />} />
+          </Route>
+        </Routes>
       </MemoryRouter>
     );
 
@@ -41,9 +45,10 @@ describe('Details Component', () => {
   });
   it('hides the component when clicking the close button', async () => {
     renderWithProviders(
-      <MemoryRouter initialEntries={['/details/pikachu']}>
-        <PokemonPage />
-        <Details />
+      <MemoryRouter initialEntries={[`/details/${pokemonName}`]}>
+        <Routes>
+          <Route path="details/:itemId" element={<Details />} />
+        </Routes>
       </MemoryRouter>
     );
 
@@ -61,8 +66,10 @@ describe('Details Component', () => {
 
   it('correctly displays detailed card data', async () => {
     renderWithProviders(
-      <MemoryRouter initialEntries={['/details/pikachu']}>
-        <Details />
+      <MemoryRouter initialEntries={[`/details/${pokemonName}`]}>
+        <Routes>
+          <Route path="details/:itemId" element={<Details />} />
+        </Routes>
       </MemoryRouter>
     );
 
