@@ -1,4 +1,6 @@
 import CardContainer from '@/components/card/CardContainer';
+import { Details } from '@/components/details/Details';
+import { START_LIMIT, START_PAGE } from '@/constants/countPage';
 import {
   getPokemonByName,
   getPokemonList,
@@ -8,20 +10,6 @@ import {
 import { wrapper } from '@/store/store';
 import { GetServerSideProps } from 'next';
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (context) => {
-//     const { itemId } = context.params || {};
-//     if (itemId && typeof itemId === 'string') {
-//       store.dispatch(getPokemonByName.initiate(itemId));
-//     }
-
-//     await Promise.all(store.dispatch(getRunningQueriesThunk()));
-
-//     return {
-//       props: {},
-//     };
-//   }
-// );
 export const getServerSideProps: GetServerSideProps =
   wrapper.getServerSideProps((store) => async (context) => {
     try {
@@ -34,8 +22,8 @@ export const getServerSideProps: GetServerSideProps =
 
       const { data } = await store.dispatch(
         getPokemonList.initiate({
-          page: (offset as string) || '1',
-          limit: (limit as string) || '20',
+          page: (offset as string) || START_PAGE.toString(),
+          limit: (limit as string) || START_LIMIT.toString(),
         })
       );
       if (data) {
@@ -59,7 +47,11 @@ export const getServerSideProps: GetServerSideProps =
     }
   });
 const DetailPage = () => {
-  return <CardContainer />;
+  return (
+    <CardContainer>
+      <Details />
+    </CardContainer>
+  );
 };
 
 export default DetailPage;

@@ -3,7 +3,6 @@ import { FC } from 'react';
 import Button from '@/components/button/Button';
 import { useGetPokemonByNameQuery } from '@/store';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 export const Details: FC = () => {
   const router = useRouter();

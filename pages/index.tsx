@@ -1,26 +1,25 @@
 import { Pagination } from '@/components/Pagination/Pagination';
 import CardContainer from '@/components/card/CardContainer';
 import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
+import { START_LIMIT, START_PAGE } from '@/constants/countPage';
 import {
   getPokemonByName,
   getPokemonList,
   getRunningQueriesThunk,
-  setSearchValue,
 } from '@/store';
+import { useAppSelector } from '@/store/hooks';
 import { wrapper } from '@/store/store';
 import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps =
   wrapper.getServerSideProps((store) => async (context) => {
     try {
-      const { offset, limit, search } = context.params || {};
-
-      store.dispatch(setSearchValue((search as string) || ''));
+      const { offset, limit } = context.params || {};
 
       const { data } = await store.dispatch(
         getPokemonList.initiate({
-          page: (offset as string) || '1',
-          limit: (limit as string) || '20',
+          page: (offset as string) || START_PAGE.toString(),
+          limit: (limit as string) || START_LIMIT.toString(),
         })
       );
       if (data) {
@@ -45,12 +44,14 @@ export const getServerSideProps: GetServerSideProps =
   });
 
 const PokemonPage = () => {
+  const { searchValue } = useAppSelector((state) => state.search);
+
   return (
     <>
       <ErrorBoundary>
         <CardContainer />
       </ErrorBoundary>
-      <Pagination />
+      {!searchValue && <Pagination />}
     </>
   );
 };

@@ -2,19 +2,16 @@ import { FC } from 'react';
 import Link from 'next/link';
 import styles from '@/styles/Card.module.scss';
 import { useGetPokemonByNameQuery } from '@/store';
-import { useAppSelector } from '@/store/hooks';
-import Image from 'next/image';
 export interface CardProps {
   name: string;
 }
 const Card: FC<CardProps> = ({ name }) => {
-  const { searchValue } = useAppSelector((state) => state.search);
   const { data, isLoading, isError, isSuccess } =
     useGetPokemonByNameQuery(name);
 
   return (
     <>
-      {isError && <h3>Pokemon {searchValue.toUpperCase()} was not found!</h3>}
+      {isError && <h3>Pokemon {name.toUpperCase()} was not found!</h3>}
       {isLoading && <h3>Loading...</h3>}
       {isSuccess && (
         <Link href={`/details/${name}`}>
