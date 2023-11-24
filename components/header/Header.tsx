@@ -5,15 +5,19 @@ import { useDispatch } from 'react-redux';
 import { setSearchValue } from '../../store';
 import styles from '@/styles/Header.module.scss';
 import { useAppSelector } from '@/store/hooks';
+import { useRouter } from 'next/router';
 
 const Header = () => {
   const [value, setValue] = useState('');
-
+  const router = useRouter();
+  const { query } = router;
   const dispatch = useDispatch();
   const { searchValue } = useAppSelector((state) => state.search);
 
   useEffect(() => {
-    setValue(searchValue);
+    const val = (query.search as string) || '';
+    dispatch(setSearchValue(val));
+    setValue(val);
   }, []);
 
   const handleChange = (newValue: string) => {
@@ -22,6 +26,17 @@ const Header = () => {
 
   const handleSearch = () => {
     localStorage.setItem('searchValue', value);
+    const url = {
+      pathname: router.pathname,
+      query: {
+        ...query,
+        search: encodeURIComponent(value),
+      },
+    };
+    const newUrl = new URL(window.location.href);
+    newUrl.search = new URLSearchParams(url.query).toString();
+    window.history.replaceState({}, '', newUrl.href);
+
     dispatch(setSearchValue(value));
   };
 

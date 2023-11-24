@@ -7,10 +7,7 @@ interface SearchState {
 }
 
 const initialState: SearchState = {
-  searchValue:
-    typeof window !== 'undefined'
-      ? localStorage.getItem('searchValue') || ''
-      : '',
+  searchValue: '',
   isLoading: false,
 };
 

@@ -28,6 +28,9 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
 
-const makeStore: MakeStore<AppStore> = (context: Context) => setupStore();
+// export interface State {
+//   tick: string;
+// }
 
+const makeStore = (context: Context) => store;
 export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

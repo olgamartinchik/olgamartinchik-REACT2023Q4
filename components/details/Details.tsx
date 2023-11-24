@@ -3,7 +3,6 @@ import { FC } from 'react';
 import Button from '@/components/button/Button';
 import { useGetPokemonByNameQuery } from '@/store';
 import { useRouter } from 'next/router';
-import RootLayout from '@/components/layout/layout';
 
 export const Details: FC = () => {
   const router = useRouter();
@@ -13,7 +12,7 @@ export const Details: FC = () => {
     useGetPokemonByNameQuery(itemId as string);
 
   const closeDetails = () => {
-    router.back();
+    router.push('/');
   };
 
   return (

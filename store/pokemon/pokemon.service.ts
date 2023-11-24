@@ -8,6 +8,7 @@ export const pokemonApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
+      console.log('HYDRATE', action.payload);
       return action.payload[reducerPath];
     }
   },

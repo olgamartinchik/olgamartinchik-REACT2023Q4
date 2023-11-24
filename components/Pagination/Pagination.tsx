@@ -17,7 +17,7 @@ export const Pagination = () => {
   const { currentPage, limitPage } = useAppSelector(
     (state) => state.pagination
   );
-  // const { searchValue } = useAppSelector((state) => state.search);
+
   const { query } = router;
   const offset = query.offset as string;
   const limit = query.limit as string;
@@ -32,14 +32,25 @@ export const Pagination = () => {
   }, [offset, limit]);
 
   useEffect(() => {
-    router.replace({
+    // router.replace({
+    //   pathname: router.pathname,
+    //   query: {
+    //     ...query,
+    //     offset: currentPage.toString(),
+    //     limit: limitPage.toString(),
+    //   },
+    // });
+    const url = {
       pathname: router.pathname,
       query: {
         ...query,
         offset: currentPage.toString(),
         limit: limitPage.toString(),
       },
-    });
+    };
+    const newUrl = new URL(window.location.href);
+    newUrl.search = new URLSearchParams(url.query).toString();
+    window.history.replaceState({}, '', newUrl.href);
   }, [currentPage, limitPage]);
 
   const generatePageNumbers = (start: number, end: number) => {

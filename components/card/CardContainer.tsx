@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import Card from './Card';
 import Button from '../button/Button';
 import { useGetPokemonListQuery } from '@/store';
@@ -6,14 +6,16 @@ import styles from '@/styles/Card.module.scss';
 import { useRouter } from 'next/router';
 import { useAppSelector } from '@/store/hooks';
 import { Details } from '../details/Details';
+import { RootState } from '@/store/store';
 
-const CardContainer = () => {
+const CardContainer: FC = () => {
   const router = useRouter();
   const [isHasError, setIsHasError] = useState<boolean>(false);
   const [handleError, setHandleError] = useState<null | string>(null);
   const { currentPage, limitPage } = useAppSelector(
     (state) => state.pagination
   );
+  const itemId = router.query.itemId as string;
   const { data, error, isLoading, isError, isSuccess } = useGetPokemonListQuery(
     {
       page: (currentPage * 2).toString(),
@@ -51,9 +53,7 @@ const CardContainer = () => {
             data?.map((item) => <Card key={item.name} name={item.name} />)}
           {searchValue && <Card name={searchValue} />}
         </div>
-        <div className={styles.container__details}>
-          {typeof window !== 'undefined' && router.query.itemId && <Details />}
-        </div>
+        <div className={styles.container__details}>{itemId && <Details />}</div>
       </section>
     </div>
   );

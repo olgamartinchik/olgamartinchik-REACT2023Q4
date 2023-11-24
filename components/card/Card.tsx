@@ -1,7 +1,6 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '@/styles/Card.module.scss';
-// import { useAppSelector } from '@/store/store';
 import { useGetPokemonByNameQuery } from '@/store';
 import { useAppSelector } from '@/store/hooks';
 
