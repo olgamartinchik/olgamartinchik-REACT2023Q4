@@ -4,7 +4,6 @@ import Button from '../button/Button';
 import { useDispatch } from 'react-redux';
 import { setSearchValue } from '../../store';
 import styles from '@/styles/Header.module.scss';
-import { useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/router';
 
 const Header = () => {
@@ -12,7 +11,6 @@ const Header = () => {
   const router = useRouter();
   const { query } = router;
   const dispatch = useDispatch();
-  const { searchValue } = useAppSelector((state) => state.search);
 
   useEffect(() => {
     const val = (query.search as string) || '';

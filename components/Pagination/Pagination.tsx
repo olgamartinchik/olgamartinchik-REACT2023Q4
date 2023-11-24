@@ -5,7 +5,6 @@ import { setCurrentPage, setLimitPage } from '../../store';
 import {
   COUNT_PAGE,
   DEFAULT_VISIBLE_PAGES,
-  START_LIMIT,
   START_PAGE,
 } from '../../constants/countPage';
 import { useDispatch } from 'react-redux';
@@ -32,14 +31,6 @@ export const Pagination = () => {
   }, [offset, limit]);
 
   useEffect(() => {
-    // router.replace({
-    //   pathname: router.pathname,
-    //   query: {
-    //     ...query,
-    //     offset: currentPage.toString(),
-    //     limit: limitPage.toString(),
-    //   },
-    // });
     const url = {
       pathname: router.pathname,
       query: {

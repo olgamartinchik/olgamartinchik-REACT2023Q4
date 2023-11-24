@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, useState } from 'react';
 import Card from './Card';
 import Button from '../button/Button';
 import { useGetPokemonListQuery } from '@/store';
@@ -6,7 +6,6 @@ import styles from '@/styles/Card.module.scss';
 import { useRouter } from 'next/router';
 import { useAppSelector } from '@/store/hooks';
 import { Details } from '../details/Details';
-import { RootState } from '@/store/store';
 
 const CardContainer: FC = () => {
   const router = useRouter();
@@ -16,12 +15,10 @@ const CardContainer: FC = () => {
     (state) => state.pagination
   );
   const itemId = router.query.itemId as string;
-  const { data, error, isLoading, isError, isSuccess } = useGetPokemonListQuery(
-    {
-      page: (currentPage * 2).toString(),
-      limit: limitPage.toString(),
-    }
-  );
+  const { data, isLoading, isSuccess } = useGetPokemonListQuery({
+    page: (currentPage * 2).toString(),
+    limit: limitPage.toString(),
+  });
   const { searchValue } = useAppSelector((state) => state.search);
 
   if (isHasError) {

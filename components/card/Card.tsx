@@ -1,15 +1,15 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 import styles from '@/styles/Card.module.scss';
 import { useGetPokemonByNameQuery } from '@/store';
 import { useAppSelector } from '@/store/hooks';
-
+import Image from 'next/image';
 export interface CardProps {
   name: string;
 }
 const Card: FC<CardProps> = ({ name }) => {
   const { searchValue } = useAppSelector((state) => state.search);
-  const { data, error, isLoading, isError, isSuccess } =
+  const { data, isLoading, isError, isSuccess } =
     useGetPokemonByNameQuery(name);
 
   return (

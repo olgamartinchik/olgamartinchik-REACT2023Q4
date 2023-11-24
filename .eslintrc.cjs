@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   extends: [
+    'plugin:@next/next/recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
@@ -44,4 +45,13 @@ module.exports = {
       version: 'detect',
     },
   },
+
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/explicit-module-boundary-types': ['off'],
+      },
+    },
+  ],
 };

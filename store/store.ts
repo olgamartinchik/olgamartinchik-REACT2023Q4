@@ -1,10 +1,9 @@
 import { Middleware, combineReducers, configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { pokemonApi } from './pokemon/pokemon.service';
 import { paginationReducer } from './pagination/pagination.slice';
 import { searchValueReducer } from './search/search.slice';
 import type { PreloadedState } from '@reduxjs/toolkit';
-import { createWrapper, Context, MakeStore } from 'next-redux-wrapper';
+import { createWrapper, Context } from 'next-redux-wrapper';
 
 export const rootReducer = combineReducers({
   pagination: paginationReducer,
@@ -28,9 +27,5 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
 
-// export interface State {
-//   tick: string;
-// }
-
-const makeStore = (context: Context) => store;
+const makeStore = (_context: Context) => store;
 export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });
