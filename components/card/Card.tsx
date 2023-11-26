@@ -8,7 +8,7 @@ export interface CardProps {
 const Card: FC<CardProps> = ({ name }) => {
   const { data, isLoading, isError, isSuccess } =
     useGetPokemonByNameQuery(name);
-  // console.log('card data', data);
+
   return (
     <>
       {isError && <h3>Pokemon {name.toUpperCase()} was not found!</h3>}

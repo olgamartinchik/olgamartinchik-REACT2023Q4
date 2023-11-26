@@ -6,18 +6,8 @@ import CardContainer from './CardContainer';
 import { Details } from '../details/Details';
 import { createMockRouter } from '../../test/createMockRouter';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-// import { server } from '../../mocks/server';
 
 describe('Card Component', () => {
-  // beforeAll(() => {
-  //   server.listen();
-  // });
-
-  // afterEach(() => {
-  //   server.resetHandlers();
-  // });
-
-  // afterAll(() => server.close());
   it('Render the card with relevant data', async () => {
     renderWithProviders(<Card name="pikachu" />);
 

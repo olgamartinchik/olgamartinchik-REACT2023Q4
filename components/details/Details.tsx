@@ -11,7 +11,7 @@ export const Details: FC = () => {
   const { data, isLoading, isSuccess } = useGetPokemonByNameQuery(
     itemId as string
   );
-  console.log('itemId', itemId);
+
   const closeDetails = () => {
     router.push('/');
   };

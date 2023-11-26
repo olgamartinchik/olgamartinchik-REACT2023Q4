@@ -1,7 +1,5 @@
 import { screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-// import { BrowserRouter } from 'react-router-dom';
-
 import { renderWithProviders } from '../../test/test-utils';
 import Header from './Header';
 import { vi } from 'vitest';

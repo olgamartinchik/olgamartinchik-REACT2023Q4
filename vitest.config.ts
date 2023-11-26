@@ -13,10 +13,5 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
     },
-
-    include: [
-      'pages//*.{test,spec}.?(c|m)[jt]s?(x)',
-      'components//*.{test,spec}.?(c|m)[jt]s?(x)',
-    ],
   },
 });

@@ -5,19 +5,8 @@ import { renderWithProviders } from '../../test/test-utils';
 import CardContainer from '../card/CardContainer';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { createMockRouter } from '../../test/createMockRouter';
-// import { server } from '../../mocks/server';
 
 describe('Details Component', () => {
-  // beforeAll(() => {
-  //   server.listen();
-  // });
-
-  // afterEach(() => {
-  //   server.resetHandlers();
-  // });
-
-  // afterAll(() => server.close());
-
   it('Check loader', async () => {
     renderWithProviders(
       <RouterContext.Provider
