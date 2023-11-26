@@ -1,9 +1,9 @@
 import { FC, ReactNode, useState } from 'react';
 import Card from './Card';
 import Button from '../button/Button';
-import { useGetPokemonListQuery } from '@/store';
-import styles from '@/styles/Card.module.scss';
-import { useAppSelector } from '@/store/hooks';
+import { useGetPokemonListQuery } from '../../store';
+import styles from '../../styles/Card.module.scss';
+import { useAppSelector } from '../../store/hooks';
 
 interface CardContainerProps {
   children?: ReactNode;

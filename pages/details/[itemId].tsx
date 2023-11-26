@@ -1,13 +1,13 @@
-import CardContainer from '@/components/card/CardContainer';
-import { Details } from '@/components/details/Details';
-import { START_LIMIT, START_PAGE } from '@/constants/countPage';
+import CardContainer from '../../components/card/CardContainer';
+import { Details } from '../../components/details/Details';
+import { START_LIMIT, START_PAGE } from '../../constants/countPage';
 import {
   getPokemonByName,
   getPokemonList,
   getRunningQueriesThunk,
   setSearchValue,
-} from '@/store';
-import { wrapper } from '@/store/store';
+} from '../../store';
+import { wrapper } from '../../store/store';
 import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps =

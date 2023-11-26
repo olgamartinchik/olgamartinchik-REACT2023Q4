@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Pokemon, PokemonData, PokemonResultData } from './pokemon.models';
-import { baseUrl } from '@/helpers/api.helper';
+import { baseUrl } from '../../helpers/api.helper';
 import { HYDRATE } from 'next-redux-wrapper';
 
 export const pokemonApi = createApi({

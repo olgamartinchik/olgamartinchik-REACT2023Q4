@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import styles from '@/styles/Card.module.scss';
-import { useGetPokemonByNameQuery } from '@/store';
+import styles from '../../styles/Card.module.scss';
+import { useGetPokemonByNameQuery } from '../../store';
 export interface CardProps {
   name: string;
 }
 const Card: FC<CardProps> = ({ name }) => {
   const { data, isLoading, isError, isSuccess } =
     useGetPokemonByNameQuery(name);
-
+  // console.log('card data', data);
   return (
     <>
       {isError && <h3>Pokemon {name.toUpperCase()} was not found!</h3>}

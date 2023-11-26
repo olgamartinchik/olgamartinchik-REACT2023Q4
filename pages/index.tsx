@@ -1,14 +1,14 @@
-import { Pagination } from '@/components/Pagination/Pagination';
-import CardContainer from '@/components/card/CardContainer';
-import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
-import { START_LIMIT, START_PAGE } from '@/constants/countPage';
+import { Pagination } from '../components/Pagination/Pagination';
+import CardContainer from '../components/card/CardContainer';
+import ErrorBoundary from '../components/errorBoundary/ErrorBoundary';
+import { START_LIMIT, START_PAGE } from '../constants/countPage';
 import {
   getPokemonByName,
   getPokemonList,
   getRunningQueriesThunk,
-} from '@/store';
-import { useAppSelector } from '@/store/hooks';
-import { wrapper } from '@/store/store';
+} from '../store';
+import { useAppSelector } from '../store/hooks';
+import { wrapper } from '../store/store';
 import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps =

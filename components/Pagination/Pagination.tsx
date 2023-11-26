@@ -8,7 +8,7 @@ import {
   START_PAGE,
 } from '../../constants/countPage';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '../../store/hooks';
 
 export const Pagination = () => {
   const router = useRouter();
@@ -77,7 +77,11 @@ export const Pagination = () => {
   return (
     <div className={styles.pagination}>
       {
-        <select value={limitPage} onChange={(e) => handlerSetLimitPage(e)}>
+        <select
+          value={limitPage}
+          onChange={(e) => handlerSetLimitPage(e)}
+          aria-label="Select limit"
+        >
           <option value={10}>10</option>
           <option value={20}>20</option>
           <option value={40}>40</option>

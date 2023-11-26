@@ -21,15 +21,25 @@
     // "allowImportingTsExtensions": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-    // "types": ["vitest/globals", "jest", "node"]
+    "types": ["vitest/globals", "node"],
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
+  "testEnvironmentOptions": {
+    "customExportConditions": [""]
+  },
   // "include": [".eslintrc.cjs", "src", "./src/test/setup.ts"],
   // "references": [{ "path": "./tsconfig.node.json" }]
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "./test/setup.ts"
+  ],
   "exclude": ["node_modules"]
 }

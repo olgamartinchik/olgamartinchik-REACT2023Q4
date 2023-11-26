@@ -1,7 +1,7 @@
-import styles from '@/styles/Details.module.scss';
+import styles from '../../styles/Details.module.scss';
 import { FC } from 'react';
-import Button from '@/components/button/Button';
-import { useGetPokemonByNameQuery } from '@/store';
+import Button from '../../components/button/Button';
+import { useGetPokemonByNameQuery } from '../../store';
 import { useRouter } from 'next/router';
 
 export const Details: FC = () => {
@@ -11,7 +11,7 @@ export const Details: FC = () => {
   const { data, isLoading, isSuccess } = useGetPokemonByNameQuery(
     itemId as string
   );
-
+  console.log('itemId', itemId);
   const closeDetails = () => {
     router.push('/');
   };
