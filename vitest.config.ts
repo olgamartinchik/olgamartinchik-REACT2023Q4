@@ -4,10 +4,8 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+
   test: {
-    // testEnvironmentOptions: {
-    //   customExportConditions: [''],
-    // },
     globals: true,
     environment: 'jsdom',
     css: true,
@@ -15,5 +13,10 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
     },
+
+    include: [
+      'pages//*.{test,spec}.?(c|m)[jt]s?(x)',
+      'components//*.{test,spec}.?(c|m)[jt]s?(x)',
+    ],
   },
 });

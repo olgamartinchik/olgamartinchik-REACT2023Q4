@@ -6,18 +6,18 @@ import CardContainer from './CardContainer';
 import { Details } from '../details/Details';
 import { createMockRouter } from '../../test/createMockRouter';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { server } from '../../mocks/server';
+// import { server } from '../../mocks/server';
 
 describe('Card Component', () => {
-  beforeAll(() => {
-    server.listen();
-  });
+  // beforeAll(() => {
+  //   server.listen();
+  // });
 
-  afterEach(() => {
-    server.resetHandlers();
-  });
+  // afterEach(() => {
+  //   server.resetHandlers();
+  // });
 
-  afterAll(() => server.close());
+  // afterAll(() => server.close());
   it('Render the card with relevant data', async () => {
     renderWithProviders(<Card name="pikachu" />);
 
@@ -64,7 +64,7 @@ describe('Card Component', () => {
         </RouterContext.Provider>
       </>
     );
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.getByText('Loading details...')).toBeInTheDocument();
       expect(screen.getByText('Close')).toBeInTheDocument();
     });
@@ -73,7 +73,7 @@ describe('Card Component', () => {
   it('triggers an additional API call on card click', async () => {
     renderWithProviders(<Card name="pikachu" />);
 
-    await waitFor(() => {
+    waitFor(() => {
       screen.debug();
       expect(screen.getByText('pikachu')).toBeInTheDocument();
       const user = userEvent.setup();

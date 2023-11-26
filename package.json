@@ -8,9 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
-    "lint:fix": "eslint  --fix",
+    "lint:fix": "eslint . --fix",
+    "format:fix": "prettier . --write --config ./.prettierrc",
     "preview": "vite preview",
-    "format:fix": "prettier   --write --config ./.prettierrc",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "npm lint:fix",
@@ -22,7 +22,7 @@
     "pre-push": "npm run test-once"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,json}": [
+    "*/.{js,jsx,ts,tsx,json}": [
       "npm run lint",
       "npm run lint:fix",
       "npm run format:fix"

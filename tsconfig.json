@@ -21,7 +21,7 @@
     // "allowImportingTsExtensions": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest/globals", "node"],
+    "types": ["vitest/globals", "jest", "node"],
     "plugins": [
       {
         "name": "next"

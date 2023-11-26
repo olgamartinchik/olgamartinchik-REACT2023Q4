@@ -4,20 +4,20 @@ import { renderWithProviders } from '../../test/test-utils';
 import userEvent from '@testing-library/user-event';
 import { createMockRouter } from '../../test/createMockRouter';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { server } from '../../mocks/server';
+// import { server } from '../../mocks/server';
 import PokemonPage from '../../pages';
 import RootLayout from '../layout/layout';
 
 describe('CardContainer Component', () => {
-  beforeAll(() => {
-    server.listen();
-  });
+  // beforeAll(() => {
+  //   server.listen();
+  // });
 
-  afterEach(() => {
-    server.resetHandlers();
-  });
+  // afterEach(() => {
+  //   server.resetHandlers();
+  // });
 
-  afterAll(() => server.close());
+  // afterAll(() => server.close());
   test('Renders the specified number of cards', async () => {
     renderWithProviders(
       <RouterContext.Provider
