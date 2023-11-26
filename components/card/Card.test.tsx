@@ -54,7 +54,7 @@ describe('Card Component', () => {
         </RouterContext.Provider>
       </>
     );
-    waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByText('Loading details...')).toBeInTheDocument();
       expect(screen.getByText('Close')).toBeInTheDocument();
     });
@@ -63,7 +63,7 @@ describe('Card Component', () => {
   it('triggers an additional API call on card click', async () => {
     renderWithProviders(<Card name="pikachu" />);
 
-    waitFor(() => {
+    await waitFor(() => {
       screen.debug();
       expect(screen.getByText('pikachu')).toBeInTheDocument();
       const user = userEvent.setup();

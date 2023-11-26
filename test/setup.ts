@@ -1,11 +1,11 @@
 import { server } from '../mocks/server';
 import '@testing-library/jest-dom';
-// beforeAll(() => {
-//   server.listen();
-// });
+beforeAll(() => {
+  server.listen();
+});
 
-// afterEach(() => {
-//   server.resetHandlers();
-// });
+afterEach(() => {
+  server.resetHandlers();
+});
 
-// afterAll(() => server.close());
+afterAll(() => server.close());
