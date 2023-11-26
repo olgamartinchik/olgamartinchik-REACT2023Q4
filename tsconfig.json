@@ -28,9 +28,9 @@
       }
     ]
   },
-  "testEnvironmentOptions": {
-    "customExportConditions": [""]
-  },
+  // "testEnvironmentOptions": {
+  //   "customExportConditions": [""]
+  // },
   // "include": [".eslintrc.cjs", "src", "./src/test/setup.ts"],
   // "references": [{ "path": "./tsconfig.node.json" }]
 

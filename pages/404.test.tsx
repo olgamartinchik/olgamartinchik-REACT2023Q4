@@ -1,10 +1,11 @@
 import { screen, waitFor } from '@testing-library/react';
-import NotFound from './404';
+
 import { createMockRouter } from '../test/createMockRouter';
 import PokemonPage from '.';
 import { server } from '../mocks/server';
 import { renderWithProviders } from '../test/test-utils';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import NotFound from './404';
 
 describe('NotFound Component', () => {
   beforeAll(() => {

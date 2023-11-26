@@ -42,7 +42,7 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.3",
     "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.1.0",
+    "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.8",
     "@types/node": "^20",
@@ -73,6 +73,6 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.5",
-    "vitest": "^0.30.1"
+    "vitest": "^0.34.6"
   }
 }

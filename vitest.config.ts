@@ -5,13 +5,15 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   test: {
+    // testEnvironmentOptions: {
+    //   customExportConditions: [''],
+    // },
     globals: true,
     environment: 'jsdom',
     css: true,
     setupFiles: './test/setup.ts',
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
     },
   },
 });
-// "vitest": "^0.34.6"
