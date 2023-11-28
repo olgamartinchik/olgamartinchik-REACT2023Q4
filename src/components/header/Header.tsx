@@ -1,38 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Input from '../input/Input';
-import './Header.scss';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '../button/Button';
-import { PokemonContext } from '../../context/PokemonContext';
-import { useSearchParams } from 'react-router-dom';
-import { useAppSelector } from '../../store/store';
-import { useDispatch } from 'react-redux';
-import { setSearchValue } from '../../store';
+import './Header.scss';
 
-export const Header = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [value, setValue] = useState('');
-  // const { updatePokemon, searchValue } = useContext(PokemonContext);
-  const dispatch = useDispatch();
-  const { searchValue } = useAppSelector((state) => state.search);
-
-  useEffect(() => {
-    // dispatch(setSearchValue(localStorage.getItem('searchValue') || ''));
-    setValue(searchValue);
-  }, []);
-
-  const handleChange = (newValue: string) => {
-    setValue(newValue);
-  };
-
-  const handleSearch = () => {
-    localStorage.setItem('searchValue', value);
-    dispatch(setSearchValue(value));
-  };
-
+const Header = () => {
+  const navigate = useNavigate();
   return (
     <header className="header">
-      <Input value={value} onChange={handleChange} />
-      <Button handleButton={handleSearch} text={'Search'} />
+      <div className="header__btn">
+        <Button text={'Home Page'} handleButton={() => navigate('/')} />
+      </div>
+      <nav className="nav">
+        <NavLink to={`/form/`}>
+          <span>Uncontrolled form</span>
+        </NavLink>
+
+        <NavLink to={`/hookform/`}>
+          <span>Uncontrolled form with React Hook Form</span>
+        </NavLink>
+      </nav>
     </header>
   );
 };
+export default Header;
