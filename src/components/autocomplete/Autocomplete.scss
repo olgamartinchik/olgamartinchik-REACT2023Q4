@@ -1,0 +1,23 @@
+.autocomplete {
+  position: absolute;
+  width: 150px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  padding: 15px;
+  text-align: start;
+  line-height: 2;
+}
+
+.list__country {
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #646cff;
+  }
+}

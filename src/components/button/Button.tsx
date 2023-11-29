@@ -1,15 +1,21 @@
-import { FC } from 'react';
+import { ButtonHTMLAttributes, FC } from 'react';
 import './Button.scss';
 
-interface ButtonProps {
-  handleButton: () => void;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  handleButton?: () => void;
   text: string;
 }
 
-export const Button: FC<ButtonProps> = ({ handleButton, text }) => {
+export const Button: FC<ButtonProps> = ({ handleButton, text, ...rest }) => {
   const handleSearch = (): void => {
-    handleButton();
+    if (handleButton) {
+      handleButton();
+    }
   };
 
-  return <button onClick={handleSearch}>{text}</button>;
+  return (
+    <button onClick={handleSearch} {...rest}>
+      {text}
+    </button>
+  );
 };

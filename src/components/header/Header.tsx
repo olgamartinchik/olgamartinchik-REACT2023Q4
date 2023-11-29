@@ -11,11 +11,11 @@ const Header = () => {
       </div>
       <nav className="nav">
         <NavLink to={`/form/`}>
-          <span>Uncontrolled form</span>
+          <span>Form</span>
         </NavLink>
 
         <NavLink to={`/hookform/`}>
-          <span>Uncontrolled form with React Hook Form</span>
+          <span>React Hook Form</span>
         </NavLink>
       </nav>
     </header>

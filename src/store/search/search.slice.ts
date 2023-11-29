@@ -1,28 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import countries from './countries';
 
 const SEARCH_VALUE_SLICE = 'SearchState';
 interface SearchState {
-  searchValue: string;
-  isLoading: boolean;
+  countries: Array<string>;
+  selectedCountry: string;
 }
 
 const initialState: SearchState = {
-  searchValue: localStorage.getItem('searchValue') || '',
-  isLoading: false,
+  countries,
+  selectedCountry: '',
 };
 
 const searchValueSlice = createSlice({
   name: SEARCH_VALUE_SLICE,
   initialState,
   reducers: {
-    setSearchValue(state, action: PayloadAction<string>) {
-      state.searchValue = action.payload;
-    },
-    setSearchLoading(state, action: PayloadAction<boolean>) {
-      state.isLoading = action.payload;
+    selectCountry(state, action: PayloadAction<string>) {
+      state.selectedCountry = action.payload;
     },
   },
 });
 
-export const { setSearchValue, setSearchLoading } = searchValueSlice.actions;
+export const { selectCountry } = searchValueSlice.actions;
 export const searchValueReducer = searchValueSlice.reducer;
