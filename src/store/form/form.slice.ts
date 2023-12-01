@@ -3,7 +3,6 @@ import { FormType } from './form.model';
 
 const FORM_VALUE_SLICE = 'FormState';
 
-type ImgFile = string | ArrayBuffer | null;
 interface FormState {
   reactForm: FormType;
   reactHookForm: FormType;

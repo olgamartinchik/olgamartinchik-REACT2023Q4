@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import './Autocomplete.scss';
 import { useAppSelector } from '../../store/store';
 

@@ -9,7 +9,6 @@ import * as yup from 'yup';
 import formSchema from '../../Validations/FormValidation';
 import {
   FileObject,
-  FileType,
   setReactForm,
   FormType,
   setReactFormLoading,
@@ -25,7 +24,6 @@ const ReactForm = () => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
   >({});
-  // const [isValidate, setIsValidate]=useState()
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -52,22 +50,17 @@ const ReactForm = () => {
     const formData = Object.fromEntries(data.entries()) as Partial<FormType>;
 
     try {
-      // const isValidate = await formSchema.isValid(formData, {
-      //   abortEarly: false,
-      // });
-      // console.log('isValidate', isValidate);
       const validationData = await formSchema.validate(formData, {
         abortEarly: false,
       });
       setValidationErrors({});
-      console.log('validationData', validationData);
+
       if (validationData) {
         if (validationData) {
           const pictureFile = data.get('picture') as FileObject;
 
           if (pictureFile) {
             const base64String = await convertFileToBase64(pictureFile);
-
             validationData.picture = base64String;
           }
         }
@@ -84,7 +77,6 @@ const ReactForm = () => {
           errors[err.path as string] = err.message;
         });
         setValidationErrors(errors);
-        console.log('Validation errors:', errors);
       }
       dispatch(setReactFormLoading(false));
     }
@@ -96,7 +88,7 @@ const ReactForm = () => {
       <form className="form" ref={formRef} onSubmit={handleSubmit}>
         <div className="form__label">
           <label className="label">
-            Name:{' '}
+            Name:
             <Input
               type="text"
               placeholder="Name..."

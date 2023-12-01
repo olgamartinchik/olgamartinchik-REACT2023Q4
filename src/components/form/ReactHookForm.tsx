@@ -27,7 +27,6 @@ const ReactHookForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors, isValid },
     reset,
@@ -39,7 +38,6 @@ const ReactHookForm = () => {
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files: FileList | null = e.target.files;
     if (files && files.length > 0) {
-      // Convert the file to base64 and update the state
       const base64String = await convertFileToBase64(files[0]);
       setConvertedImageData(base64String);
     }
@@ -57,13 +55,12 @@ const ReactHookForm = () => {
   };
   const onSubmitHandler = async (data: FormType) => {
     dispatch(setReactHookFormLoading(false));
-    console.log('hook form ', data);
+
     if (data) {
       if (convertedImageData) {
         data.picture = convertedImageData;
       }
 
-      console.log('hook form convertFileToBase64', data);
       dispatch(setReactHookForm(data));
       dispatch(setReactHookFormLoading(true));
       navigate('/');

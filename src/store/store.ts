@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-
 import { searchValueReducer } from './search';
 import type { PreloadedState } from '@reduxjs/toolkit';
 import { formValueReducer } from './form';
