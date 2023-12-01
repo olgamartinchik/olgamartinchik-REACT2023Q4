@@ -1,6 +1,6 @@
-import HookForm from '../components/form/HookForm';
+import ReactHookForm from '../components/form/ReactHookForm';
 
 const HookFormPage = () => {
-  return <HookForm />;
+  return <ReactHookForm />;
 };
 export default HookFormPage;

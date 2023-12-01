@@ -9,7 +9,7 @@ const Input = forwardRef(
     return (
       <>
         <input {...props} ref={ref} />
-        {error && <div className="error-message">{error}</div>}
+        <span className="error-message">{error && error}</span>
       </>
     );
   }

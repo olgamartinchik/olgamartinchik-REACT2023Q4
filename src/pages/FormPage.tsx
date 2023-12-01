@@ -1,6 +1,6 @@
-import Form from '../components/form/Form';
+import ReactForm from '../components/form/ReactForm';
 
 const FormPage = () => {
-  return <Form />;
+  return <ReactForm />;
 };
 export default FormPage;

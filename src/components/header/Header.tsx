@@ -11,7 +11,7 @@ const Header = () => {
       </div>
       <nav className="nav">
         <NavLink to={`/form/`}>
-          <span>Form</span>
+          <span>React Form</span>
         </NavLink>
 
         <NavLink to={`/hookform/`}>

@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import { searchValueReducer } from './search/search.slice';
+import { searchValueReducer } from './search';
 import type { PreloadedState } from '@reduxjs/toolkit';
+import { formValueReducer } from './form';
 
 export const rootReducer = combineReducers({
   search: searchValueReducer,
+  form: formValueReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
