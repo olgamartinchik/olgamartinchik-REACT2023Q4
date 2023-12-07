@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import Header from '../components/header/Header';
 import { useAppSelector } from '../store/store';
@@ -12,9 +12,11 @@ import {
   setReactHookFormLoading,
 } from '../store/form';
 import './Main.scss';
+import { useEffect } from 'react';
 
 const Main = () => {
   const location = useLocation();
+
   const dispatch = useDispatch();
   const {
     reactForm,
@@ -22,6 +24,7 @@ const Main = () => {
     isLoadingReactForm,
     isLoadingReactHookForm,
   } = useAppSelector((state) => state.form);
+
   const handleClearReactForm = () => {
     dispatch(setReactFormLoading(false));
     dispatch(setReactForm({} as FormType));

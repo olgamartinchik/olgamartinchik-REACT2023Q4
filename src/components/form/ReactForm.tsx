@@ -19,6 +19,7 @@ import { convertFileToBase64 } from '../../helpers/convertFile';
 const ReactForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isNewDataEntered, setIsNewDataEntered] = useState(false);
   const [isDisplay, setIsDisplay] = useState(false);
   const [countryValue, setCountryValue] = useState('');
   const [validationErrors, setValidationErrors] = useState<
@@ -39,6 +40,7 @@ const ReactForm = () => {
   };
   const handleInputFocus = (fieldName: string) => {
     setValidationErrors((prevErrors) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [fieldName]: currentFieldError, ...restErrors } = prevErrors;
       return restErrors;
     });
@@ -56,14 +58,13 @@ const ReactForm = () => {
       setValidationErrors({});
 
       if (validationData) {
-        if (validationData) {
-          const pictureFile = data.get('picture') as FileObject;
+        const pictureFile = data.get('picture') as FileObject;
 
-          if (pictureFile) {
-            const base64String = await convertFileToBase64(pictureFile);
-            validationData.picture = base64String;
-          }
+        if (pictureFile) {
+          const base64String = await convertFileToBase64(pictureFile);
+          validationData.picture = base64String;
         }
+
         dispatch(setReactForm(validationData));
         dispatch(setReactFormLoading(true));
         navigate('/');

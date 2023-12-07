@@ -75,11 +75,11 @@ const ReactHookForm = () => {
       <form className="form" onSubmit={handleSubmit(onSubmitHandler)}>
         <div className="form__label">
           <label className="label">
-            Name:{' '}
+            Name:
             <Input
+              {...register('name')}
               type="text"
               placeholder="Name..."
-              {...register('name')}
               error={errors.name?.message}
               required
               autoComplete="off"
@@ -88,9 +88,9 @@ const ReactHookForm = () => {
           <label className="label">
             Email:
             <Input
+              {...register('email')}
               type="email"
               placeholder="Email@email.com"
-              {...register('email')}
               error={errors.email?.message}
               required
               autoComplete="off"
@@ -101,11 +101,11 @@ const ReactHookForm = () => {
           <label className="label">
             Age:
             <Input
+              {...register('age')}
               type="number"
               placeholder="Age"
               min={1}
               max={100}
-              {...register('age')}
               error={errors.age?.message}
               required
             />
@@ -156,9 +156,9 @@ const ReactHookForm = () => {
           <label className="label">
             Password:
             <Input
+              {...register('password')}
               type="password"
               placeholder="Password123"
-              {...register('password')}
               error={errors.password?.message}
               required
               autoComplete="off"
@@ -167,9 +167,9 @@ const ReactHookForm = () => {
           <label className="label">
             Check Password:
             <Input
+              {...register('confirmPassword')}
               type="password"
               placeholder="Password123"
-              {...register('confirmPassword')}
               error={errors.confirmPassword?.message}
               required
               autoComplete="off"
@@ -179,9 +179,9 @@ const ReactHookForm = () => {
         <div className="label label--checked">
           <label htmlFor="checkbox">Accept Terms and Conditions</label>
           <Input
+            {...register('accept')}
             id="checkbox"
             type="checkbox"
-            {...register('accept')}
             error={errors.accept?.message}
             required
           />

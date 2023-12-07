@@ -18,7 +18,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
   return (
     <div className="autocomplete">
       <ul className="list">
-        {countries &&
+        {Boolean(countries.length) &&
           countries
             .filter((item) =>
               item
